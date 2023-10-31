@@ -53,11 +53,6 @@ public class DbAccess {
         String QueryStr = "select * from TAIKHOAN where EMAIL =N'"+name+"' and MATKHAU=N'"+pass+"'";
         DbAccess acc = new DbAccess();
 
-//        String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
-//                    "databaseName=VANPHONGPHAM;user=sa;password=12345;encrypt=false";
-//
-//        connection = DriverManager.getConnection(URL);\
-       
         ResultSet rsl = acc.Query(QueryStr);
         while (rsl.next()) {                
                 TaiKhoan std = new TaiKhoan(rsl.getInt("TAIKHOAN_ID"), 
