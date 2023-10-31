@@ -29,7 +29,7 @@ public class ServerThread implements Runnable {
     }
 
     public static final int loginServer = 1;
-    public static final int loginDatabase = 2;
+    public static final int login = 2;
     public static final int insertThongTin = 3;
     public static final int thiTracNghiem = 4;
     public static final int tinhSoCauDung = 5;
@@ -38,7 +38,7 @@ public class ServerThread implements Runnable {
         if (str.equals("1")) {
             return loginServer;
         } else if (str.equals("2")) {
-            return loginDatabase;
+            return login;
         } else if (str.equals("3")) {
             return insertThongTin;
         } else if (str.equals("4")) {
@@ -65,14 +65,14 @@ public class ServerThread implements Runnable {
                         dos.writeUTF("Connected fail");
                     }
                     break;
-                case loginDatabase:
-//                    System.out.print(receive);
-//                    if (ConnectDB.getConnect(receive) == true) {
-//                        dos.writeUTF("Connected");
-//                    } else {
-//                        dos.writeUTF("Connected fail");
-//                    }
-//                    break;
+                case login:
+                    System.out.print(receive);
+                    if (DbAccess.DangNhap(receive) == true) {
+                        dos.writeUTF("1");
+                    } else {
+                        dos.writeUTF("0");
+                    }
+                    break;
                 case insertThongTin:
 //                    String[] arrStr = receive.split("///");
 //                    System.out.println("Ho ten: " + arrStr[1] + "\nMSSV: " + arrStr[2] + "" + "\nSDT: " + arrStr[3]);
