@@ -30,9 +30,8 @@ public class ServerThread implements Runnable {
 
     public static final int loginServer = 1;
     public static final int login = 2;
-    public static final int insertThongTin = 3;
-    public static final int thiTracNghiem = 4;
-    public static final int tinhSoCauDung = 5;
+    public static final int thiTracNghiem = 3;
+
 
     public int flag(String str) {
         if (str.equals("1")) {
@@ -40,8 +39,6 @@ public class ServerThread implements Runnable {
         } else if (str.equals("2")) {
             return login;
         } else if (str.equals("3")) {
-            return insertThongTin;
-        } else if (str.equals("4")) {
             return thiTracNghiem;
         } else {
             return -1;
@@ -73,35 +70,29 @@ public class ServerThread implements Runnable {
                         dos.writeUTF("0");
                     }
                     break;
-                case insertThongTin:
-//                    String[] arrStr = receive.split("///");
-//                    System.out.println("Ho ten: " + arrStr[1] + "\nMSSV: " + arrStr[2] + "" + "\nSDT: " + arrStr[3]);
-//                    if (ConnectDB.insertThongTin(receiveArray[1], receiveArray[2], receiveArray[3]) == true) {
-//                        dos.writeUTF("Success");
-//                    } else {
-//                        dos.writeUTF("Connected fail");
-//                    }
-                    break;
                 case thiTracNghiem:
-//                    System.out.println("Có Client đang thi trắc nghiệm...");
-//                    String strCauHoi = ConnectDB.getAllCauHoi();
-//                    String arrCauHoi[] = strCauHoi.split("///");
-//                    dos.writeUTF(strCauHoi);
-//                    String receiveAnswer = dis.readUTF();
-//                    System.out.println("Client đã trả lời: " + receiveAnswer);
-//                    String arrAnswer[] = receiveAnswer.split("///");
-//                    int cauDung = 0;
-//                    ArrayList<String> Answer = new ArrayList<>();
-//                    for (int i = 0; i < arrCauHoi.length; i+=7) {
-//                        Answer.add(arrCauHoi[6]);
-//                    }
-//                    for (int i = 0; i < arrAnswer.length; i++) {
-//                        if (Answer.get(i).equals(arrAnswer[i])) {
-//                            cauDung++;
-//                        }
-//                    }
-//                    System.out.println("Số câu đúng: " + cauDung);
-//                    dos.writeUTF(String.valueOf(cauDung));
+                    System.out.println("Có Client đang thi trắc nghiệm...");
+                    String strCauHoi = DbAccess.getAllCauHoi();
+                    System.out.println(strCauHoi);
+                    String arrCauHoi[] = strCauHoi.split("///");
+                    dos.writeUTF(strCauHoi);
+                    //nhan cau tra loi lient
+                    String receiveAnswer = dis.readUTF();
+                    System.out.println("Client đã trả lời: " + receiveAnswer);
+                    String arrAnswer[] = receiveAnswer.split("///");
+                    int cauDung = 0;
+                    ArrayList<String> Answer = new ArrayList<>();
+                    for (int i = 0; i < arrCauHoi.length; i+=7) {
+                        Answer.add(arrCauHoi[7]);
+                    }
+                    //so sanh cau tra loi
+                    for (int i = 0; i < arrAnswer.length; i++) {
+                        if (Answer.get(i).equals(arrAnswer[i])) {
+                            cauDung++;
+                        }
+                    }
+                    System.out.println("Số câu đúng: " + cauDung);
+                    dos.writeUTF(String.valueOf(cauDung));
                     break;
             }
         } catch (IOException ex) {

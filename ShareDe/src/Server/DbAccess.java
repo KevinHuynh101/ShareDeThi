@@ -6,7 +6,9 @@ package Server;
 import Data.TaiKhoan;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -110,6 +112,55 @@ public class DbAccess {
                 }
             }
         }      
+    }
+    public static String getAllCauHoi() {
+        int[] soCau = new int[40];
+        Connection connection = null;
+        PreparedStatement statement = null;
+        Arrays.fill(soCau, 0);
+        String sql = "SELECT * FROM BODE";
+        Random rand = new Random();
+        int dem = 0;
+        while (dem < 10) {
+//            int k = 32;
+            int k = rand.nextInt(32);
+            if (soCau[k] != 1) {
+                soCau[k] = 1;
+                dem++;
+            }
+        }
+        dem = -1;
+        String str = "";
+        try {
+        DbAccess acc = new DbAccess();
+
+        ResultSet rs = acc.Query(sql);
+            while (rs.next()) {
+                dem++;
+                if (soCau[dem] > 0) {
+                    str += rs.getString("BODE_ID");
+                    str += "///";
+                    str += rs.getString("CHUDE_ID");
+                    str += "///";
+                    str += rs.getString("NOIDUNG");
+                    str += "///";
+                    str += rs.getString("A");
+                    str += "///";
+                    str += rs.getString("B");
+                    str += "///";
+                    str += rs.getString("C");
+                    str += "///";
+                    str += rs.getString("D");
+                    str += "///";
+                    str += rs.getString("DAP_AN");
+                    str += "///";
+                }
+            }
+            System.out.println(str);
+        } catch (SQLException ex) {
+            Logger.getLogger(DbAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return str;
     }
     
     
