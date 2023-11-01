@@ -11,10 +11,49 @@ import java.util.Date;
  * @author kimdo
  */
 public class TaiKhoan {
-    int TAIKHOAN_ID;
+    int TAIKHOAN_ID,BLOCK,BLOCKTAODE,BLOCKTHI;
     String EMAIL,TEN,OTP,MATKHAU;
     boolean GIOITINH,PHANQUYEN;
     Date NGAYSINH,NGAYXACNHAN;
+
+    public int getBLOCK() {
+        return BLOCK;
+    }
+
+    public void setBLOCK(int BLOCK) {
+        this.BLOCK = BLOCK;
+    }
+
+    public int getBLOCKTAODE() {
+        return BLOCKTAODE;
+    }
+
+    public void setBLOCKTAODE(int BLOCKTAODE) {
+        this.BLOCKTAODE = BLOCKTAODE;
+    }
+
+    public int getBLOCKTHI() {
+        return BLOCKTHI;
+    }
+
+    public void setBLOCKTHI(int BLOCKTHI) {
+        this.BLOCKTHI = BLOCKTHI;
+    }
+
+    public TaiKhoan(int TAIKHOAN_ID, int BLOCK, int BLOCKTAODE, int BLOCKTHI, String EMAIL, String TEN, String OTP, String MATKHAU, boolean GIOITINH, boolean PHANQUYEN, Date NGAYSINH, Date NGAYXACNHAN) {
+        this.TAIKHOAN_ID = TAIKHOAN_ID;
+        this.BLOCK = BLOCK;
+        this.BLOCKTAODE = BLOCKTAODE;
+        this.BLOCKTHI = BLOCKTHI;
+        this.EMAIL = EMAIL;
+        this.TEN = TEN;
+        this.OTP = OTP;
+        this.MATKHAU = MATKHAU;
+        this.GIOITINH = GIOITINH;
+        this.PHANQUYEN = PHANQUYEN;
+        this.NGAYSINH = NGAYSINH;
+        this.NGAYXACNHAN = NGAYXACNHAN;
+    }
 
     public int getTAIKHOAN_ID() {
         return TAIKHOAN_ID;
@@ -72,18 +111,7 @@ public class TaiKhoan {
         this.NGAYSINH = NGAYSINH;
     }
 
-    public TaiKhoan(int TAIKHOAN_ID, String EMAIL, String TEN, String OTP, String MATKHAU, boolean GIOITINH, boolean PHANQUYEN, Date NGAYSINH, Date NGAYXACNHAN) {
-        this.TAIKHOAN_ID = TAIKHOAN_ID;
-        this.EMAIL = EMAIL;
-        this.TEN = TEN;
-        this.OTP = OTP;
-        this.MATKHAU = MATKHAU;
-        this.GIOITINH = GIOITINH;
-        this.PHANQUYEN = PHANQUYEN;
-        this.NGAYSINH = NGAYSINH;
-        this.NGAYXACNHAN = NGAYXACNHAN;
-    }
-
+    
     
 
     public Date getNGAYXACNHAN() {

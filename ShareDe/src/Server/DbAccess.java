@@ -57,7 +57,7 @@ public class DbAccess {
 
         ResultSet rsl = acc.Query(QueryStr);
         while (rsl.next()) {                
-                TaiKhoan std = new TaiKhoan(rsl.getInt("TAIKHOAN_ID"), 
+                TaiKhoan std = new TaiKhoan(rsl.getInt("TAIKHOAN_ID"),rsl.getInt("BLOCK"),rsl.getInt("BLOCKTAODE"),rsl.getInt("BLOCKTHI"),
                         rsl.getString("EMAIL"),rsl.getString("TEN"),rsl.getString("OTP") ,rsl.getString("MATKHAU"), 
                         rsl.getBoolean("GIOITINH"),rsl.getBoolean("PHANQUYEN"),rsl.getDate("NGAYSINH")
                         ,rsl.getDate("NGAYXACNHAN"));

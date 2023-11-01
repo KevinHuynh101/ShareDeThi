@@ -18,7 +18,7 @@ public class MyConnection {
 //         
             String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
                     "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
-            System.out.println(URL);
+//            System.out.println(URL);
             Connection con = DriverManager.getConnection(URL);
             
             return con;

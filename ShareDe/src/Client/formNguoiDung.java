@@ -338,7 +338,7 @@ private boolean checkButton = false;
             statement = connection.createStatement();           
             ResultSet rs = statement.executeQuery(sql);            
             while (rs.next()) {                
-                 TaiKhoan std = new TaiKhoan(rs.getInt("TAIKHOAN_ID"), 
+                 TaiKhoan std = new TaiKhoan(rs.getInt("TAIKHOAN_ID"), rs.getInt("BLOCK"),rs.getInt("BLOCKTAODE"),rs.getInt("BLOCKTHI"),
                         rs.getString("EMAIL"),rs.getString("TEN"),rs.getString("OTP") ,rs.getString("MATKHAU"), 
                         rs.getBoolean("GIOITINH"),rs.getBoolean("PHANQUYEN"),rs.getDate("NGAYSINH")
                         ,rs.getDate("NGAYXACNHAN"));

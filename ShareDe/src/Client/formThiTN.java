@@ -116,9 +116,9 @@ public final class formThiTN extends javax.swing.JFrame {
             jRadioButtonCauC.setText("C. " + CH.getC());
             System.out.println("D. " + CH.getD());
             jRadioButtonCauD.setText("D. " + CH.getD());
-//            if (dem == soCau) {
-//                jButtonTiepTheo.setText("NỘP BÀI");
-//            }
+            if (dem == soCau) {
+                jButtonTiepTheo.setText("NỘP BÀI");
+            }
         } else {
             String send = "";
             for (int i = 0; i < cauChon.size(); i++) {
