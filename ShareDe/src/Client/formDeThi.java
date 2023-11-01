@@ -156,8 +156,13 @@ public class formDeThi extends javax.swing.JFrame {
             }
         });
 
-        btnAddCauHoi.setText("Thêm câu hỏi");
+        btnAddCauHoi.setText("Câu hỏi");
         btnAddCauHoi.setEnabled(false);
+        btnAddCauHoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddCauHoiActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("s/Câu");
 
@@ -229,8 +234,8 @@ public class formDeThi extends javax.swing.JFrame {
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
@@ -256,9 +261,9 @@ public class formDeThi extends javax.swing.JFrame {
                             .addComponent(btnAddCauHoi))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16))))
+                        .addGap(19, 19, 19))))
         );
 
         pack();
@@ -411,6 +416,13 @@ public class formDeThi extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnAddCauHoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCauHoiActionPerformed
+        // TODO add your handling code here:
+        formCauHoi frm2 = new formCauHoi(txtid.getText());
+        frm2.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnAddCauHoiActionPerformed
 
     /**
      * @param args the command line arguments
