@@ -15,7 +15,8 @@ import java.net.Socket;
 import java.net.URL;
 
 /**
- * @author Pham Minh Hieu
+ *
+ * @author kimdo
  */
 public class formClient extends javax.swing.JFrame {
 

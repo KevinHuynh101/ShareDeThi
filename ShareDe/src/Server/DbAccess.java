@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Server;
+import Data.Bin;
 import Data.TaiKhoan;
 import java.sql.*;
 import java.util.ArrayList;
@@ -25,13 +26,13 @@ public class DbAccess {
             MyConnection mycon = new MyConnection();
             conn = mycon.getConnect();
             stmt = conn.createStatement();
+           
         }catch(Exception ex){
             ex.printStackTrace();
         }
+//       
     }
-    
-    
-    
+
     public ResultSet Query(String str){
         try{
               ResultSet rs = stmt.executeQuery(str);
@@ -89,7 +90,6 @@ public class DbAccess {
             
              String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
                     "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
-            System.out.println(URL);
             connection = DriverManager.getConnection(URL);
             String sql = "UPDATE BIN SET  ID_TAIKHOAN =N'"+id+"' WHERE ID = 1;";           
             statement = connection.prepareCall(sql);
@@ -113,56 +113,64 @@ public class DbAccess {
             }
         }      
     }
-    public static String getAllCauHoi() {
-        int[] soCau = new int[40];
-        Connection connection = null;
-        PreparedStatement statement = null;
-        Arrays.fill(soCau, 0);
-        String sql = "SELECT * FROM BODE";
-        Random rand = new Random();
-        int dem = 0;
-        while (dem < 10) {
-//            int k = 32;
-            int k = rand.nextInt(32);
-            if (soCau[k] != 1) {
-                soCau[k] = 1;
-                dem++;
-            }
-        }
-        dem = -1;
-        String str = "";
-        try {
-        DbAccess acc = new DbAccess();
 
-        ResultSet rs = acc.Query(sql);
-            while (rs.next()) {
-                dem++;
-                if (soCau[dem] > 0) {
-                    str += rs.getString("BODE_ID");
-                    str += "///";
-                    str += rs.getString("CHUDE_ID");
-                    str += "///";
-                    str += rs.getString("NOIDUNG");
-                    str += "///";
-                    str += rs.getString("A");
-                    str += "///";
-                    str += rs.getString("B");
-                    str += "///";
-                    str += rs.getString("C");
-                    str += "///";
-                    str += rs.getString("D");
-                    str += "///";
-                    str += rs.getString("DAP_AN");
-                    str += "///";
-                }
-            }
-            System.out.println(str);
-        } catch (SQLException ex) {
-            Logger.getLogger(DbAccess.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return str;
-    }
+//    public static String getAllCauHoi() {
+//
+//        int id_ChuDe = 0;
+//        int socauhoi = 0 ;
+//
+//        System.out.println("id_chude :"+id_ChuDe);
+//        int[] soCau = new int[40];
+//
+//        PreparedStatement statement = null;
+//        Arrays.fill(soCau, 0);// tạo một danh sách câu hỏi có độ dài 32, ác câu hỏi đều chưa được chọn (0)
+//        String sql = "SELECT * FROM BODE WHERE CHUDE_ID = '"+id_ChuDe+"'";
+//        Random rand = new Random();
+//        int dem = 0;//đếm số lượng câu hỏi đã được chọn.
+//        while (dem < socauhoi) {//chọn đủ 10 câu hỏi.
+//
+//            int k = rand.nextInt(20);//random 0-19
+//            if (soCau[k] != 1) {
+//                soCau[k] = 1;//k là đã được chọn bằng cách gán giá trị 1 
+//                dem++;//thêm một câu hỏi.
+//            }
+//        }
+//         dem = -1;
+//        String str = "";
+//        try {
+//        DbAccess acc = new DbAccess();
+//
+//        ResultSet rs = acc.Query(sql);
+//            while (rs.next()) {
+//                dem++;
+//                if (soCau[dem] > 0) {
+//                    str += rs.getString("BODE_ID");
+//                    str += "///";
+//                    str += rs.getString("CHUDE_ID");
+//                    str += "///";
+//                    str += rs.getString("NOIDUNG");
+//                    str += "///";
+//                    str += rs.getString("A");
+//                    str += "///";
+//                    str += rs.getString("B");
+//                    str += "///";
+//                    str += rs.getString("C");
+//                    str += "///";
+//                    str += rs.getString("D");
+//                    str += "///";
+//                    str += rs.getString("DAP_AN");
+//                    str += "///";
+//                }
+//            }
+//
+//            System.out.println(str);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(DbAccess.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return str;
+//    }
     
+
     
     
 }

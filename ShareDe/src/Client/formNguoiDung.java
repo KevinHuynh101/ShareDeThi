@@ -72,15 +72,15 @@ public class formNguoiDung extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton1.setText("Người dùng");
         jButton1.setEnabled(false);
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 119, 52));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 119, 52));
 
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton2.setText("Thi");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, 119, 52));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, 119, 52));
 
         jButton3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton3.setText("Đề thi");
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 119, 53));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 119, 53));
 
         jButton4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton4.setText("Đăng xuất");
@@ -89,63 +89,63 @@ public class formNguoiDung extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 350, 119, 56));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, 119, 56));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 204));
         jLabel1.setText("Thông tin tài khoản");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 40, 180, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 40, 180, -1));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 204));
         jLabel2.setText("Họ tên :");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 90, 62, -1));
-        getContentPane().add(txtTen, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 80, 272, 31));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 90, 62, -1));
+        getContentPane().add(txtTen, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 80, 272, 31));
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 204));
         jLabel3.setText("Email :");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 150, 62, -1));
-        getContentPane().add(txtMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 210, 208, 27));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, 62, -1));
+        getContentPane().add(txtMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 210, 208, 27));
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 204));
         jLabel4.setText("Mật Khẩu :");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 220, 76, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 220, 76, -1));
 
         txtEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtEmailActionPerformed(evt);
             }
         });
-        getContentPane().add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 140, 272, 28));
+        getContentPane().add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 140, 272, 28));
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 204));
         jLabel5.setText("Giới tính :");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 280, 76, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 280, 76, -1));
 
         cbNam.setBackground(new java.awt.Color(255, 255, 255));
         cbNam.setForeground(new java.awt.Color(255, 255, 255));
         cbNam.setText("Nam");
-        getContentPane().add(cbNam, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 280, 80, -1));
+        getContentPane().add(cbNam, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 280, 80, -1));
 
         cbNu.setBackground(new java.awt.Color(255, 255, 255));
         cbNu.setForeground(new java.awt.Color(255, 255, 255));
         cbNu.setText("Nữ");
-        getContentPane().add(cbNu, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 280, 80, -1));
+        getContentPane().add(cbNu, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 280, 80, -1));
 
         jLabel6.setBackground(new java.awt.Color(255, 255, 255));
         jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 204));
         jLabel6.setText("Ngày sinh :");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 350, 80, -1));
-        getContentPane().add(NgaySinh, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 340, 272, 25));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 350, 80, -1));
+        getContentPane().add(NgaySinh, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 340, 272, 25));
 
         btnCapNhat.setBackground(new java.awt.Color(255, 255, 204));
         btnCapNhat.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
@@ -155,7 +155,7 @@ public class formNguoiDung extends javax.swing.JFrame {
                 btnCapNhatActionPerformed(evt);
             }
         });
-        getContentPane().add(btnCapNhat, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 400, 110, 30));
+        getContentPane().add(btnCapNhat, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 400, 110, 30));
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-eye-20.png"))); // NOI18N
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -163,13 +163,13 @@ public class formNguoiDung extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 210, 30, -1));
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 210, 30, -1));
 
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/brg_xanhduong.jpg"))); // NOI18N
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1090, 600));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 490));
 
-        setSize(new java.awt.Dimension(1090, 607));
+        setSize(new java.awt.Dimension(853, 504));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -308,7 +308,9 @@ private boolean checkButton = false;
 
         ResultSet rsl = acc.Query(QueryStr);
         while (rsl.next()) {                
-                Bin std = new Bin(rsl.getInt("ID"),rsl.getInt("ID_TAIKHOAN"));
+                Bin std = new Bin(rsl.getInt("ID"),rsl.getInt("ID_TAIKHOAN"),rsl.getInt("BLOCK"),
+                rsl.getInt("BLOCKTAODE"),rsl.getInt("BLOCKTHI"),rsl.getInt("ID_CHUDE"),
+                rsl.getInt("SOCAUHOI"),rsl.getInt("THOIGIAN"));
                id = std.getID_TAIKHOAN();
             }
         } catch (Exception ex) {

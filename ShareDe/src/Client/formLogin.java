@@ -203,8 +203,8 @@ public class formLogin extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(this, "KẾT NỐI THÀNH CÔNG");
                         formLogin DN = new formLogin();
                         this.setVisible(false);
-//                        formThongTin TT = new formThongTin();
-//                        TT.setVisible(true);
+                        formNguoiDung TT = new formNguoiDung();
+                        TT.setVisible(true);
                         check = true;
                         socket.close();
                     } else {

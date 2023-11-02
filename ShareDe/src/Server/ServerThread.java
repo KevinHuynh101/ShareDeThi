@@ -71,28 +71,28 @@ public class ServerThread implements Runnable {
                     }
                     break;
                 case thiTracNghiem:
-                    System.out.println("Có Client đang thi trắc nghiệm...");
-                    String strCauHoi = DbAccess.getAllCauHoi();
-                    System.out.println(strCauHoi);
-                    String arrCauHoi[] = strCauHoi.split("///");
-                    dos.writeUTF(strCauHoi);
-                    //nhan cau tra loi lient
-                    String receiveAnswer = dis.readUTF();
-                    System.out.println("Client đã trả lời: " + receiveAnswer);
-                    String arrAnswer[] = receiveAnswer.split("///");
-                    int cauDung = 0;
-                    ArrayList<String> Answer = new ArrayList<>();
-                    for (int i = 0; i < arrCauHoi.length; i+=7) {
-                        Answer.add(arrCauHoi[7]);
-                    }
-                    //so sanh cau tra loi
-                    for (int i = 0; i < arrAnswer.length; i++) {
-                        if (Answer.get(i).equals(arrAnswer[i])) {
-                            cauDung++;
-                        }
-                    }
-                    System.out.println("Số câu đúng: " + cauDung);
-                    dos.writeUTF(String.valueOf(cauDung));
+//                    System.out.println("Có Client đang thi trắc nghiệm...");
+//                    String strCauHoi = DbAccess.getAllCauHoi();
+//                    System.out.println(strCauHoi);
+//                    String arrCauHoi[] = strCauHoi.split("///");
+//                    //dos.writeUTF(strCauHoi);
+//                    //nhan cau tra loi lient
+//                    String receiveAnswer = dis.readUTF();
+//                    System.out.println("Client đã trả lời: " + receiveAnswer);
+//                    String arrAnswer[] = receiveAnswer.split("///");
+//                    int cauDung = 0;
+//                    ArrayList<String> Answer = new ArrayList<>();
+//                    for (int i = 0; i < arrCauHoi.length; i+=7) {
+//                        Answer.add(arrCauHoi[7]);
+//                    }
+//                    //so sanh cau tra loi
+//                    for (int i = 0; i < arrAnswer.length; i++) {
+//                        if (Answer.get(i).equals(arrAnswer[i])) {
+//                            cauDung++;
+//                        }
+//                    }
+//                    System.out.println("Số câu đúng: " + cauDung);
+//                    dos.writeUTF(String.valueOf(cauDung));
                     break;
             }
         } catch (IOException ex) {

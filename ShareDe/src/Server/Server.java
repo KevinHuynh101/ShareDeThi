@@ -28,13 +28,13 @@ public class Server {
 
     public void action() throws IOException {
         Socket socket = null;
-        int i = 0;
+        int i = 1;
         System.out.println("Server is running...");
         try {
             while ((socket = server.accept()) != null) {
                 new ServerThread(socket, "Client#" + i);
-                System.out.printf("Thread for Client#%d generating...%n", i++);
-            }
+                System.out.printf("Số người dùng đang online %d %n", i++);
+            } 
         } catch (Exception e) {
             e.printStackTrace();
         }

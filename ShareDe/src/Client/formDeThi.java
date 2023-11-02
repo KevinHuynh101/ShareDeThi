@@ -493,7 +493,9 @@ public void LayId() {
 
         ResultSet rsl = acc.Query(QueryStr);
         while (rsl.next()) {                
-                Bin std = new Bin(rsl.getInt("ID"),rsl.getInt("ID_TAIKHOAN"));
+                Bin std = new Bin(rsl.getInt("ID"),rsl.getInt("ID_TAIKHOAN"),rsl.getInt("BLOCK"),
+                rsl.getInt("BLOCKTAODE"),rsl.getInt("BLOCKTHI"),rsl.getInt("ID_CHUDE"),
+                rsl.getInt("SOCAUHOI"),rsl.getInt("THOIGIAN"));
                taikhoan_id = std.getID_TAIKHOAN();
             }
         } catch (Exception ex) {

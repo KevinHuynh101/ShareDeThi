@@ -4,19 +4,50 @@
  */
 package Client;
 
+
+import Data.ChuDe;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author kimdo
  */
 public class formThi extends javax.swing.JFrame {
 
+
+    List<ChuDe> chudeList = new ArrayList<>();
+    DefaultTableModel tableModel;
     /**
      * Creates new form formThi
      */
+   
+    
+    
     public formThi() {
         initComponents();
-    }
+        tableModel = (DefaultTableModel) tbChuDe.getModel();
+        showChuDe();
 
+    }
+    private void showChuDe() {
+        chudeList = DbAccess.findChuDe();
+        
+        tableModel.setRowCount(0);
+        
+        chudeList.forEach((ChuDe) -> {
+            tableModel.addRow(new Object[] { ChuDe.getCHUDE_ID(),ChuDe.getTENCHUDE(),
+                ChuDe.getLOP_ID(), ChuDe.getSOCAUHOI(), ChuDe.getTIME()});
+        });   
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,23 +61,38 @@ public class formThi extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbChuDe = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtid = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtTen = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtPhongThi = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtSoCauHoi = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtThoiGian = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        btnThi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton1.setText("Người dùng");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 60, 176, 52));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 176, 52));
 
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton2.setText("Thi");
         jButton2.setEnabled(false);
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 170, 176, 52));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 176, 52));
 
         jButton3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton3.setText("Đề thi");
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 290, 176, 53));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 176, 53));
 
         jButton4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton4.setText("Đăng xuất");
@@ -55,12 +101,86 @@ public class formThi extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 410, 176, 56));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 390, 176, 56));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/brg_xanhduong.jpg"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 600));
+        tbChuDe.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Bộ đề", "Tên bộ đề", "Phòng thi", "Số câu hỏi", "Thời gian"
+            }
+        ));
+        tbChuDe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbChuDeMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbChuDe);
+        if (tbChuDe.getColumnModel().getColumnCount() > 0) {
+            tbChuDe.getColumnModel().getColumn(0).setPreferredWidth(55);
+            tbChuDe.getColumnModel().getColumn(0).setMaxWidth(55);
+        }
 
-        setSize(new java.awt.Dimension(1084, 607));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 50, 580, 130));
+
+        jLabel2.setText("Chọn bộ đề thi :");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 20, -1, -1));
+
+        jLabel3.setText("Bộ đề :");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 230, 50, 20));
+
+        txtid.setEnabled(false);
+        getContentPane().add(txtid, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 230, 50, 20));
+
+        jLabel4.setText("Chủ đề :");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 270, -1, 20));
+
+        txtTen.setEnabled(false);
+        getContentPane().add(txtTen, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 270, 280, 30));
+
+        jLabel5.setText("Phòng thi :");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 310, -1, 20));
+
+        txtPhongThi.setEnabled(false);
+        txtPhongThi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPhongThiActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtPhongThi, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 310, 280, 30));
+
+        jLabel6.setText("Số câu hỏi :");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 360, -1, 20));
+
+        txtSoCauHoi.setEnabled(false);
+        getContentPane().add(txtSoCauHoi, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 360, 50, 30));
+
+        jLabel7.setText("Thời gian :");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 360, -1, 20));
+
+        txtThoiGian.setEnabled(false);
+        getContentPane().add(txtThoiGian, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 360, 50, 30));
+
+        jLabel1.setText("s/Câu");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 360, -1, 20));
+
+        jLabel8.setText("Thông tin bộ đề");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 200, -1, 20));
+
+        btnThi.setText("Thi");
+        btnThi.setEnabled(false);
+        btnThi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThiActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnThi, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 400, 140, 50));
+
+        setSize(new java.awt.Dimension(853, 513));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -70,6 +190,30 @@ public class formThi extends javax.swing.JFrame {
         frm.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void txtPhongThiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPhongThiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPhongThiActionPerformed
+
+    private void tbChuDeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbChuDeMouseClicked
+        // TODO add your handling code here:
+         int vitri = tbChuDe.getSelectedRow();
+        txtid.setText(tbChuDe.getValueAt(vitri, 0).toString());
+        txtTen.setText(tbChuDe.getValueAt(vitri, 1).toString());
+        txtPhongThi.setText(tbChuDe.getValueAt(vitri, 3).toString());
+        txtSoCauHoi.setText(tbChuDe.getValueAt(vitri, 3).toString());
+        txtThoiGian.setText(tbChuDe.getValueAt(vitri, 4).toString());
+        btnThi.setEnabled(true);
+        
+    }//GEN-LAST:event_tbChuDeMouseClicked
+
+    private void btnThiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThiActionPerformed
+        // TODO add your handling code here:
+       LuuId_ChuDe();
+       formThiTN frm2 = new formThiTN();
+        frm2.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnThiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -102,15 +246,64 @@ public class formThi extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new formThi().setVisible(true);
+                
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnThi;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tbChuDe;
+    private javax.swing.JTextField txtPhongThi;
+    private javax.swing.JTextField txtSoCauHoi;
+    private javax.swing.JTextField txtTen;
+    private javax.swing.JTextField txtThoiGian;
+    private javax.swing.JTextField txtid;
     // End of variables declaration//GEN-END:variables
+    public void LuuId_ChuDe(){
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String ID = txtid.getText();
+        String socauhoi = txtSoCauHoi.getText();
+        String thoigian = txtThoiGian.getText();
+             try {
+            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
+                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
+            connection = DriverManager.getConnection(URL);
+            String sql = "UPDATE BIN SET ID_CHUDE = N'"+ID+"', SOCAUHOI = '"+socauhoi+"', THOIGIAN = N'"+thoigian+"' WHERE ID = 1;";
+            statement = connection.prepareCall(sql);
+            statement.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(formThi.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThi.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThi.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 }

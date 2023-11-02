@@ -6,6 +6,7 @@ package Client;
 
 
 
+import Data.Bin;
 import Data.CauHoi;
 import Data.KetQua;
 import javax.swing.*;
@@ -15,39 +16,52 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @author Pham Minh Hieu
+ *
+ * @author kimdo
  */
 public final class formThiTN extends javax.swing.JFrame {
 
-    Socket socket;
-    DataInputStream dis;
-    DataOutputStream dos;
+//    Socket socket;
+//    DataInputStream dis;
+//    DataOutputStream dos;
     int soCau = 0;
+    int thoigian=0 ;
+    int id_ChuDe = 0;
+    int socauhoi = 0 ;
+    String str = "";
     private static int timer = 30;
     int current = -1;
     int dem = 0;
     ArrayList<CauHoi> listCauhoi = null;
     ArrayList cauChon = null;
+    String[] arrStr;
+    int id_taikhoan;
 
-    /**
-     * Creates new form formThiTracNghiem
-     */
     public formThiTN() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle("THI TRẮC NGHIỆM");
+        LayThoiGian();
         listCauhoi = new ArrayList();
         cauChon = new ArrayList();
+        getAllCauHoi();
         ThiTracNghiem();
         
+        
     }
-
+     
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -59,7 +73,7 @@ public final class formThiTN extends javax.swing.JFrame {
             g.drawString(time, 30, 80);
         } else {
             g.drawString("Times up", 30, 80);
-            timer = 31;
+            timer = thoigian +1;
             try {
                 try {
                     cauHoiKeTiep();
@@ -80,7 +94,7 @@ public final class formThiTN extends javax.swing.JFrame {
     }
 
     private void cauHoiKeTiep() throws IOException, InterruptedException {
-        timer = 30;
+        timer = thoigian;
         current++;
         //hiện kết quả vừa chọn lên console
         if (current > 0) {
@@ -101,8 +115,7 @@ public final class formThiTN extends javax.swing.JFrame {
                 System.out.println("E");
             }
         }
-
-
+        
         if (current < soCau) {
             dem++;
             CauHoi CH = listCauhoi.get(current);
@@ -124,34 +137,39 @@ public final class formThiTN extends javax.swing.JFrame {
             for (int i = 0; i < cauChon.size(); i++) {
                 send += cauChon.get(i) + "///";
             }
-            dos.writeUTF(send);
-            String diem = dis.readUTF();
-            System.out.println("Điểm của bạn là: " + diem);
-            KetQua.diem = diem;
-            KetQua.soCauDung = diem;
-            JOptionPane.showMessageDialog(null, "Bạn đã hoàn thành bài thi!! Nộp bài!");
+            String arrAnswer[] = send.split("///");
+            int cauDung = 0;
+             ArrayList<String> Answer = new ArrayList<>();
+            for (int i = 0; i < arrStr.length; i+=7) {
+                Answer.add(arrStr[7]);
+            }
+                    //so sanh cau tra loi
+             for (int i = 0; i < arrAnswer.length; i++) {
+                if (Answer.get(i).equals(arrAnswer[i])) {
+                    cauDung++;
+                }
+            }
+            System.out.println("Số câu đúng: " + cauDung);
+            double  diem = (double) (10/soCau)*cauDung;
+            LuuDiem(diem);
+            String message = "Số câu đúng :"+cauDung+"<br/>Điểm : "+diem;
+            String htmlMessage = "<html>" + message + "</html>";
+            JOptionPane.showMessageDialog(null, htmlMessage);
             this.setVisible(false);
-            //formKetQua KQ = new formKetQua();
-            //KQ.setVisible(true);
-            socket.close();
+            formThi KQ = new formThi();
+            KQ.setVisible(true);
+
         }
     }
 
     public void ThiTracNghiem() {
         try {
-            socket = new Socket("localhost", 8000);
-            dis = new DataInputStream(socket.getInputStream());
-            dos = new DataOutputStream(socket.getOutputStream());
-            String flag = "3";
-            dos.writeUTF(flag);
-           
-            String receive = dis.readUTF();
-            String[] arrStr = receive.split("///");//tách chuỗi thành các phần con dựa trên một chuỗi phân tách được chỉ định.
-//            System.out.println("arrstr"+arrStr);
-            //
+
+            arrStr = str.split("///");//tách chuỗi thành các phần con dựa trên một chuỗi phân tách được chỉ định.
+//            System.out.println(arrStr);
             int dem = 0;
             for (int i = 0; i < arrStr.length; i +=8) {
-                if (dem < 5)//chỉ dc làm 5 câu hỏi
+                if (dem < socauhoi)//chỉ dc làm so cau theo socauhoi
                 {
                     CauHoi CH = new CauHoi();
                     CH.setBODE_ID(Integer.parseInt(arrStr[i]));
@@ -285,6 +303,11 @@ public final class formThiTN extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             cauHoiKeTiep();
+            jRadioButtonCauA.setSelected(false);
+        jRadioButtonCauB.setSelected(false);
+        jRadioButtonCauC.setSelected(false);
+        jRadioButtonCauD.setSelected(false);
+
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(formThiTN.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
@@ -340,4 +363,87 @@ public final class formThiTN extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButtonCauC;
     private javax.swing.JRadioButton jRadioButtonCauD;
     // End of variables declaration//GEN-END:variables
+    public void LayThoiGian() {
+        Connection connection = null;
+        try {  
+        Connection conn = null;       
+        String QueryStr = "select * from BIN ";
+        Server.DbAccess acc = new Server.DbAccess();
+        ResultSet rsl = acc.Query(QueryStr);
+        while (rsl.next()) {                
+                Bin std = new Bin(rsl.getInt("ID"),rsl.getInt("ID_TAIKHOAN"),rsl.getInt("BLOCK"),
+                rsl.getInt("BLOCKTAODE"),rsl.getInt("BLOCKTHI"),rsl.getInt("ID_CHUDE"),
+                rsl.getInt("SOCAUHOI"),rsl.getInt("THOIGIAN"));
+                thoigian = std.getTHOIGIAN();
+                id_ChuDe = std.getID_CHUDE();
+                socauhoi = std.getSOCAUHOI();
+                id_taikhoan = std.getID_TAIKHOAN();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {                     
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThiTN.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+    public void getAllCauHoi() {
+//        System.out.println("id_chude :"+id_ChuDe);
+        int[] soCau = new int[40];
+
+        Arrays.fill(soCau, 0);// tạo một danh sách câu hỏi có độ dài 32, ác câu hỏi đều chưa được chọn (0)
+        String sql = "SELECT * FROM BODE WHERE CHUDE_ID = '"+id_ChuDe+"'";
+        Random rand = new Random();
+        int dem = 0;//đếm số lượng câu hỏi đã được chọn.
+        while (dem < socauhoi+1) {//chọn đủ 10 câu hỏi.
+            int k = rand.nextInt(11);//random 0-10
+            if (soCau[k] != 1) {
+                soCau[k] = 1;//k là đã được chọn bằng cách gán giá trị 1 
+                dem++;//thêm một câu hỏi.
+            }
+        }
+         dem = -1;
+        try {
+        DbAccess acc = new DbAccess();
+        ResultSet rs = acc.Query(sql);
+            while (rs.next()) {
+                dem++;
+                if (soCau[dem] > 0) {
+                    str += rs.getString("BODE_ID");
+                    str += "///";
+                    str += rs.getString("CHUDE_ID");
+                    str += "///";
+                    str += rs.getString("NOIDUNG");
+                    str += "///";
+                    str += rs.getString("A");
+                    str += "///";
+                    str += rs.getString("B");
+                    str += "///";
+                    str += rs.getString("C");
+                    str += "///";
+                    str += rs.getString("D");
+                    str += "///";
+                    str += rs.getString("DAP_AN");
+                    str += "///";
+                }
+            }
+
+            System.out.println(str);
+        } catch (SQLException ex) {
+            Logger.getLogger(formThiTN.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void LuuDiem (double diem){
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String sql = "insert into SCORE(TAIKHOAN_ID, SCORE, CHUDE_ID) values(N'"+id_taikhoan+"',N'"+diem+"',N'"+id_ChuDe+"')";
+        Server.DbAccess acc = new Server.DbAccess();
+        ResultSet rsl = acc.Query(sql); 
+           
+    }
 }
