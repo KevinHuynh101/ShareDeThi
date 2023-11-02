@@ -7,15 +7,24 @@ package Client;
 import Data.Bin;
 import Data.TaiKhoan;
 import java.beans.Statement;
+import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,6 +33,12 @@ import javax.swing.JOptionPane;
  */
 public class formNguoiDung extends javax.swing.JFrame {
     int id= 0;
+
+    private static final int KEY_LENGTH = 256;
+    private static final int ITERATION_COUNT = 65536;
+    String secretKey = "huynhnam";
+    String salt = "nhuhuynh";
+    String encryptmatkhau = null;
     
     /**
      * Creates new form formDangKy
@@ -32,8 +47,9 @@ public class formNguoiDung extends javax.swing.JFrame {
         initComponents();
         LayId();
         Laydata();
-        
-        
+
+        String decryptedString = decrypt(encryptmatkhau, secretKey, salt);
+        txtMatKhau.setText(decryptedString);
     }
 
     /**
@@ -47,8 +63,8 @@ public class formNguoiDung extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnDeThi = new javax.swing.JButton();
+        btnDAngXuat = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtTen = new javax.swing.JTextField();
@@ -76,20 +92,30 @@ public class formNguoiDung extends javax.swing.JFrame {
 
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton2.setText("Thi");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, 119, 52));
-
-        jButton3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jButton3.setText("Đề thi");
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 119, 53));
-
-        jButton4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jButton4.setText("Đăng xuất");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, 119, 56));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, 119, 52));
+
+        btnDeThi.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnDeThi.setText("Đề thi");
+        btnDeThi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeThiActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnDeThi, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 119, 53));
+
+        btnDAngXuat.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnDAngXuat.setText("Đăng xuất");
+        btnDAngXuat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDAngXuatActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnDAngXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, 119, 56));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -173,12 +199,12 @@ public class formNguoiDung extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnDAngXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDAngXuatActionPerformed
         // TODO add your handling code here:
         formLogin frm = new  formLogin();
         frm.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnDAngXuatActionPerformed
 private boolean checkButton = false;
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
@@ -193,11 +219,13 @@ private boolean checkButton = false;
 
     private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
         // TODO add your handling code here:
+        
          String name = txtTen.getText();
          String email = txtEmail.getText();
          Date birthday = NgaySinh.getDate();
          SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-         String pass = txtMatKhau.getText();
+         String password = new String(txtMatKhau.getPassword());
+         String encryptedPassword = encrypt(password, secretKey, salt);
          boolean gender = cbNam.isSelected() ? true : false;
          int i=0;
          if(gender == true){
@@ -212,10 +240,11 @@ private boolean checkButton = false;
             String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
                     "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
             connection = DriverManager.getConnection(URL);
-            String sql = "UPDATE TAIKHOAN SET TEN=N'"+name+"',EMAIL = N'"+email+"', MATKHAU = N'"+pass+"', GIOITINH = N'"+i+"', NGAYSINH= '"+df.format(birthday)+"' WHERE TAIKHOAN_ID ='"+id+"';";
+            String sql = "UPDATE TAIKHOAN SET TEN=N'"+name+"',EMAIL = N'"+email+"', MATKHAU = N'"+encryptedPassword+"', GIOITINH = N'"+i+"', NGAYSINH= '"+df.format(birthday)+"' WHERE TAIKHOAN_ID ='"+id+"';";
                 System.out.println(id);
             statement = connection.prepareCall(sql);        
             statement.execute();
+            JOptionPane.showMessageDialog(this, "Cập nhật thành công");
         } catch (SQLException ex) {
             Logger.getLogger(DbAccess.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -240,6 +269,20 @@ private boolean checkButton = false;
     private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        formThi frm = new  formThi();
+        frm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnDeThiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeThiActionPerformed
+        // TODO add your handling code here:
+        formDeThi frm = new  formDeThi();
+        frm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnDeThiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -280,12 +323,12 @@ private boolean checkButton = false;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser NgaySinh;
     private javax.swing.JButton btnCapNhat;
+    private javax.swing.JButton btnDAngXuat;
+    private javax.swing.JButton btnDeThi;
     private javax.swing.JRadioButton cbNam;
     private javax.swing.JRadioButton cbNu;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -326,8 +369,11 @@ private boolean checkButton = false;
         }
         
     }
+    
+    
     public void Laydata() {
         boolean gioitinh = false;
+
         Connection connection = null;
         java.sql.Statement statement = null;
         try {
@@ -346,7 +392,8 @@ private boolean checkButton = false;
                         ,rs.getDate("NGAYXACNHAN"));
                 txtTen.setText(std.getTEN());
                 txtEmail.setText(std.getEMAIL());
-                txtMatKhau.setText(std.getMATKHAU());
+//                txtMatKhau.setText(decryptPassword(std.getMATKHAU(),salt));
+                encryptmatkhau = std.getMATKHAU();
                 NgaySinh.setDate(std.getNGAYSINH());
                 gioitinh = std.isGIOITINH();
             }
@@ -376,4 +423,65 @@ private boolean checkButton = false;
             }
         }
     }
+    
+    public static String encrypt(String strToEncrypt, String secretKey, String salt) {
+
+    try {
+
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] iv = new byte[16];
+        secureRandom.nextBytes(iv);
+        IvParameterSpec ivspec = new IvParameterSpec(iv);
+
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), salt.getBytes(), ITERATION_COUNT, KEY_LENGTH);
+        SecretKey tmp = factory.generateSecret(spec);
+        SecretKeySpec secretKeySpec = new SecretKeySpec(tmp.getEncoded(), "AES");
+
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivspec);
+
+        byte[] cipherText = cipher.doFinal(strToEncrypt.getBytes("UTF-8"));
+        byte[] encryptedData = new byte[iv.length + cipherText.length];
+        System.arraycopy(iv, 0, encryptedData, 0, iv.length);
+        System.arraycopy(cipherText, 0, encryptedData, iv.length, cipherText.length);
+
+        return Base64.getEncoder().encodeToString(encryptedData);
+    } catch (Exception e) {
+        // Handle the exception properly
+        e.printStackTrace();
+        return null;
+        }
+    }
+
+
+
+    public static String decrypt(String strToDecrypt, String secretKey, String salt) {
+
+    try {
+
+        byte[] encryptedData = Base64.getDecoder().decode(strToDecrypt);
+        byte[] iv = new byte[16];
+        System.arraycopy(encryptedData, 0, iv, 0, iv.length);
+        IvParameterSpec ivspec = new IvParameterSpec(iv);
+
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), salt.getBytes(), ITERATION_COUNT, KEY_LENGTH);
+        SecretKey tmp = factory.generateSecret(spec);
+        SecretKeySpec secretKeySpec = new SecretKeySpec(tmp.getEncoded(), "AES");
+
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivspec);
+
+        byte[] cipherText = new byte[encryptedData.length - 16];
+        System.arraycopy(encryptedData, 16, cipherText, 0, cipherText.length);
+
+        byte[] decryptedText = cipher.doFinal(cipherText);
+        return new String(decryptedText, "UTF-8");
+    } catch (Exception e) {
+        // Handle the exception properly
+        e.printStackTrace();
+        return null;
+    }
+  }
 }

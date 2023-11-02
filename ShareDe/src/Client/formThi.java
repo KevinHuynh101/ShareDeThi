@@ -59,7 +59,7 @@ public class formThi extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnDeThi = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbChuDe = new javax.swing.JTable();
@@ -83,6 +83,11 @@ public class formThi extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton1.setText("Người dùng");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 176, 52));
 
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -90,9 +95,14 @@ public class formThi extends javax.swing.JFrame {
         jButton2.setEnabled(false);
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 176, 52));
 
-        jButton3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jButton3.setText("Đề thi");
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 176, 53));
+        btnDeThi.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnDeThi.setText("Đề thi");
+        btnDeThi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeThiActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnDeThi, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 176, 53));
 
         jButton4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton4.setText("Đăng xuất");
@@ -215,6 +225,20 @@ public class formThi extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnThiActionPerformed
 
+    private void btnDeThiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeThiActionPerformed
+        // TODO add your handling code here:
+                formDeThi frm = new  formDeThi();
+        frm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnDeThiActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+                formNguoiDung frm = new  formNguoiDung();
+        frm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -252,10 +276,10 @@ public class formThi extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDeThi;
     private javax.swing.JButton btnThi;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

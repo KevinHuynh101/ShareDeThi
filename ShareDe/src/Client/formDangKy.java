@@ -5,14 +5,23 @@
 package Client;
 
 import Data.TaiKhoan;
+import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,7 +29,8 @@ import javax.swing.JOptionPane;
  * @author kimdo
  */
 public class formDangKy extends javax.swing.JFrame {
-
+        private static final int KEY_LENGTH = 256;
+  private static final int ITERATION_COUNT = 65536;
     /**
      * Creates new form formDangKy
      */
@@ -175,6 +185,9 @@ public class formDangKy extends javax.swing.JFrame {
 
     private void btnDangKyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangKyActionPerformed
         // TODO add your handling code here:
+        String secretKey = "huynhnam";
+        String salt = "nhuhuynh";
+//        String salt = "huynhnam";
         if (txtTen.getText().equals("") || txtMatKhau.getText().equals("") || txtEmail.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "VUI LÒNG ĐIỀN ĐẦY ĐỦ THÔNG TIN!!");
             txtTen.requestFocus();
@@ -186,8 +199,10 @@ public class formDangKy extends javax.swing.JFrame {
          String email = txtEmail.getText();
          Date birthday = NgaySinh.getDate();
          SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-         String pass = txtMatKhau.getText();
-         String rePass = txtXacNhan.getText();
+         String password = new String(txtMatKhau.getPassword());
+         String encryptedPassword = encrypt(password, secretKey, salt);
+
+         String rePass = new String(txtXacNhan.getPassword());;
          boolean gender = cbNam.isSelected() ? true : false;
          int i=0;
          if(gender == true){
@@ -195,13 +210,13 @@ public class formDangKy extends javax.swing.JFrame {
          }
          else
              i=0;
-        if(pass.equals(rePass)){
+        if(password.equals(rePass)){
             try {
          String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
                     "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
             System.out.println(URL);
             connection = DriverManager.getConnection(URL);
-            String sql = "insert into TAIKHOAN(EMAIL, MATKHAU, TEN, GIOITINH,NGAYSINH,PHANQUYEN,OTP,NGAYXACNHAN) values(N'"+email+"',N'"+pass+"',N'"+name+"','"+i+"',N'"+df.format(birthday)+"',0,null,null)";
+            String sql = "insert into TAIKHOAN(EMAIL, MATKHAU, TEN, GIOITINH,NGAYSINH,PHANQUYEN,OTP,NGAYXACNHAN) values(N'"+email+"',N'"+encryptedPassword+"',N'"+name+"','"+i+"',N'"+df.format(birthday)+"',0,null,null)";
             statement = connection.prepareCall(sql);        
             statement.execute();
         } catch (SQLException ex) {
@@ -314,4 +329,34 @@ private boolean checkButton1 = false;
     private javax.swing.JTextField txtTen;
     private javax.swing.JPasswordField txtXacNhan;
     // End of variables declaration//GEN-END:variables
+
+    public static String encrypt(String strToEncrypt, String secretKey, String salt) {
+
+    try {
+
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] iv = new byte[16];
+        secureRandom.nextBytes(iv);
+        IvParameterSpec ivspec = new IvParameterSpec(iv);
+
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), salt.getBytes(), ITERATION_COUNT, KEY_LENGTH);
+        SecretKey tmp = factory.generateSecret(spec);
+        SecretKeySpec secretKeySpec = new SecretKeySpec(tmp.getEncoded(), "AES");
+
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivspec);
+
+        byte[] cipherText = cipher.doFinal(strToEncrypt.getBytes("UTF-8"));
+        byte[] encryptedData = new byte[iv.length + cipherText.length];
+        System.arraycopy(iv, 0, encryptedData, 0, iv.length);
+        System.arraycopy(cipherText, 0, encryptedData, iv.length, cipherText.length);
+
+        return Base64.getEncoder().encodeToString(encryptedData);
+    } catch (Exception e) {
+        // Handle the exception properly
+        e.printStackTrace();
+        return null;
+    }
+  }
 }

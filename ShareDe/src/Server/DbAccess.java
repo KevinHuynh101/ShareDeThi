@@ -5,13 +5,22 @@
 package Server;
 import Data.Bin;
 import Data.TaiKhoan;
+import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 /**
  *
  * @author huyho
@@ -19,7 +28,10 @@ import java.util.logging.Logger;
 public class DbAccess {
     private Connection conn;
     private Statement stmt;
-    
+    private static final int KEY_LENGTH = 256;
+    private static final int ITERATION_COUNT = 65536;
+    String secretKey = "huynhnam";
+    String salt = "nhuhuynh";
     
     public DbAccess(){
         try{
@@ -30,7 +42,7 @@ public class DbAccess {
         }catch(Exception ex){
             ex.printStackTrace();
         }
-//       
+//       String decryptedString = DbAccess.decrypt(secretKey, secretKey, salt);
     }
 
     public ResultSet Query(String str){
@@ -45,8 +57,9 @@ public class DbAccess {
         boolean check = false;
         Connection connection = null;
         int id= 0;
+        String matkhau = null;
+        String decryptedString = null;
         try {
-  
         Connection conn = null;
         String[] arrStr = str.split("///");
         System.out.println( "\nUsername: " + arrStr[1] + "\nPassword: " + arrStr[2]);
@@ -63,8 +76,8 @@ public class DbAccess {
                         rsl.getBoolean("GIOITINH"),rsl.getBoolean("PHANQUYEN"),rsl.getDate("NGAYSINH")
                         ,rsl.getDate("NGAYXACNHAN"));
                id = std.getTAIKHOAN_ID();
+               matkhau = std.getMATKHAU();
             }
-        
         DbAccess.LuuId(id);
         ResultSet rs = acc.Query(QueryStr);
         System.out.println("rs = "+rs);
@@ -86,6 +99,7 @@ public class DbAccess {
     public static void LuuId(int id){
         Connection connection = null;
         PreparedStatement statement = null;
+        String matkhau ;
           try {
             
              String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
@@ -94,6 +108,7 @@ public class DbAccess {
             String sql = "UPDATE BIN SET  ID_TAIKHOAN =N'"+id+"' WHERE ID = 1;";           
             statement = connection.prepareCall(sql);
             statement.execute();
+            
         } catch (SQLException ex) {
             Logger.getLogger(DbAccess.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -114,6 +129,63 @@ public class DbAccess {
         }      
     }
 
+    public  String decrypt(String strToDecrypt, String secretKey, String salt) {
+
+    try {
+
+        byte[] encryptedData = Base64.getDecoder().decode(strToDecrypt);
+        byte[] iv = new byte[16];
+        System.arraycopy(encryptedData, 0, iv, 0, iv.length);
+        IvParameterSpec ivspec = new IvParameterSpec(iv);
+
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), salt.getBytes(), ITERATION_COUNT, KEY_LENGTH);
+        SecretKey tmp = factory.generateSecret(spec);
+        SecretKeySpec secretKeySpec = new SecretKeySpec(tmp.getEncoded(), "AES");
+
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivspec);
+
+        byte[] cipherText = new byte[encryptedData.length - 16];
+        System.arraycopy(encryptedData, 16, cipherText, 0, cipherText.length);
+
+        byte[] decryptedText = cipher.doFinal(cipherText);
+        return new String(decryptedText, "UTF-8");
+    } catch (Exception e) {
+        // Handle the exception properly
+        e.printStackTrace();
+        return null;
+        }
+    }
+    public static String encrypt(String strToEncrypt, String secretKey, String salt) {
+
+    try {
+
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] iv = new byte[16];
+        secureRandom.nextBytes(iv);
+        IvParameterSpec ivspec = new IvParameterSpec(iv);
+
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), salt.getBytes(), ITERATION_COUNT, KEY_LENGTH);
+        SecretKey tmp = factory.generateSecret(spec);
+        SecretKeySpec secretKeySpec = new SecretKeySpec(tmp.getEncoded(), "AES");
+
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivspec);
+
+        byte[] cipherText = cipher.doFinal(strToEncrypt.getBytes("UTF-8"));
+        byte[] encryptedData = new byte[iv.length + cipherText.length];
+        System.arraycopy(iv, 0, encryptedData, 0, iv.length);
+        System.arraycopy(cipherText, 0, encryptedData, iv.length, cipherText.length);
+
+        return Base64.getEncoder().encodeToString(encryptedData);
+    } catch (Exception e) {
+        // Handle the exception properly
+        e.printStackTrace();
+        return null;
+    }
+  }
 //    public static String getAllCauHoi() {
 //
 //        int id_ChuDe = 0;

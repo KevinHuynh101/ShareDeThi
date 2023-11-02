@@ -199,11 +199,11 @@ public class formClient extends javax.swing.JFrame {
                     String receive = dis.readUTF();
                     System.out.println(receive);
                     socket.close();
-//                    formClient login = new formClient();
-//                    this.setVisible(false);
-//                    formLoginDB DN = new formLoginDB();
-                    //DN.setVisible(true);
-                    System.out.println("dang nhap thanh cong ");
+                    formClient login = new formClient();
+                    this.setVisible(false);
+                    formDangKy DN = new formDangKy();
+                    DN.setVisible(true);
+//                    System.out.println("dang nhap thanh cong ");
                     check = true;
                 }
             }

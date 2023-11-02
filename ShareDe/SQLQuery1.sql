@@ -118,37 +118,37 @@ INSERT [BODE] ([BODE_ID],[CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES
 (6,1,N'6.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
 INSERT [BODE] ([BODE_ID],[CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
 (7,1,N'7.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'15.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
-INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
-(1,N'15.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
 SET IDENTITY_INSERT [BODE] OFF
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'15.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'15.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
 
 
 CREATE TABLE [CHUDE_TAIKHOAN] (
@@ -181,11 +181,12 @@ CREATE TABLE [SCORE](
 	[CORE_ID] INT IDENTITY(1,1) NOT NULL,
 	[TAIKHOAN_ID] INT NOT NULL,
 	[SCORE] FLOAT DEFAULT NULL,
-	[DETAI_ID] INT NOT NULL,
+	[CHUDE_ID] INT NOT NULL,
 )
 ALTER TABLE [SCORE] ADD CONSTRAINT fk_TAIKHOAN_SCORE FOREIGN KEY ([TAIKHOAN_ID]) REFERENCES [TAIKHOAN] ([TAIKHOAN_ID]);
 GO
-
+ALTER TABLE [SCORE] ADD CONSTRAINT fk_CHUDE_SCORE FOREIGN KEY ([CHUDE_ID]) REFERENCES [CHUDE] ([CHUDE_ID]);
+GO
 
 //chứa các  quyền account
 CREATE TABLE [BIN](
@@ -194,4 +195,7 @@ CREATE TABLE [BIN](
 	[BLOCK] TINYINT DEFAULT 0,
 	[BLOCKTAODE] TINYINT DEFAULT 0,
 	[BLOCKTHI] TINYINT DEFAULT 0,
+	[ID_CHUDE]	INT,
+	[SOCAUHOI]	INT,
+	[THOIGIAN] INT,
 )
