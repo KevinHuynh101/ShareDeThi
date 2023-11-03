@@ -26,6 +26,7 @@ public class formDeThi extends javax.swing.JFrame {
     List<ChuDe> chudeList = new ArrayList<>();
     DefaultTableModel tableModel;
     int taikhoan_id;
+    boolean checkThi;
     /**
      * Creates new form formDeThi
      */
@@ -311,9 +312,20 @@ public class formDeThi extends javax.swing.JFrame {
         cbPhongThi.setSelectedItem(tbDe.getValueAt(vitri, 2).toString());
         txtSoCauHoi.setText(tbDe.getValueAt(vitri, 3).toString());
         txtThoiGian.setText(tbDe.getValueAt(vitri, 4).toString());
-        btnSua.setEnabled(true);
+        try {
+            checkThi();
+        } catch (SQLException ex) {
+            Logger.getLogger(formDeThi.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         btnSua.setEnabled(false);
+        if(checkThi == true ){
+//            System.out.println("chewckthi" +checkThi);
+            btnSua.setEnabled(true);
+        }
+//        btnSua.setEnabled(true);
         btnXoa.setEnabled(true);
         btnAddCauHoi.setEnabled(true);
+        btnThem.setEnabled(false);
     }//GEN-LAST:event_tbDeMouseClicked
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
@@ -562,5 +574,20 @@ public void LayId() {
             }
         }
     }
+public void checkThi () throws SQLException {
     
+            int ChuDe_id = Integer.parseInt(txtid.getText());
+//            System.out.println("chudeid"+ChuDe_id);
+            DbAccess acc = new DbAccess();
+            String QueryStr = "select * from SCORE where CHUDE_ID = '"+ChuDe_id+"'";
+
+            ResultSet rs = acc.Query(QueryStr);
+
+            if (rs.next()){ 
+               checkThi = true;
+            }
+            else {
+                checkThi = false;
+            }
+    }
 }
