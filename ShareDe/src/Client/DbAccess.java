@@ -159,6 +159,47 @@ public class DbAccess {
         }
          return CauHoitList;
     }
+     
+     public static List<String> findTenBoDe() {
+        List<String> studentList = new ArrayList<>();
+         Connection connection = null;
+        Statement statement = null;
+        try {
+            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
+                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
+            connection = DriverManager.getConnection(URL);
+            String sql = "select * from CHUDE ";
+            
+            statement = connection.createStatement();           
+            ResultSet resultSet = statement.executeQuery(sql);
+            System.out.println(resultSet);
+            
+            while (resultSet.next()) {                
+                String std = resultSet.getString("TENCHUDE");
+                studentList.add(std);
+            }
+        }catch (SQLException ex) {
+            Logger.getLogger(DbAccess.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DbAccess.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DbAccess.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        //ket thuc.
+         return studentList;
+    }
     
     
 }

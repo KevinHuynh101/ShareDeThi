@@ -44,6 +44,7 @@ public class formLogin extends javax.swing.JFrame {
     /**
      * Creates new form formLoginDB
      */
+    public static int id_taiKhoan;
     public formLogin() {
         initComponents();
         setLocationRelativeTo(null);
@@ -252,6 +253,7 @@ public class formLogin extends javax.swing.JFrame {
             
             if (rs.next()){
                 if(pass.equals(decryptedString)){ 
+                    id_taiKhoan= id;
                     LuuId(id);
                     JOptionPane.showMessageDialog(this, "Đăng nhập thành công ");
                     formNguoiDung frm = new formNguoiDung();

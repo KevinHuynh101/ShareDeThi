@@ -32,8 +32,8 @@ import javax.swing.JOptionPane;
  * @author kimdo
  */
 public class formNguoiDung extends javax.swing.JFrame {
-    int id= 0;
-
+//    int id= 0;
+    int id= formLogin.id_taiKhoan;
     private static final int KEY_LENGTH = 256;
     private static final int ITERATION_COUNT = 65536;
     String secretKey = "huynhnam";
@@ -45,7 +45,8 @@ public class formNguoiDung extends javax.swing.JFrame {
      */
     public formNguoiDung() {
         initComponents();
-        LayId();
+        
+//        LayId();
         Laydata();
 
         String decryptedString = decrypt(encryptmatkhau, secretKey, salt);
@@ -79,7 +80,7 @@ public class formNguoiDung extends javax.swing.JFrame {
         NgaySinh = new com.toedter.calendar.JDateChooser();
         btnCapNhat = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 255));
@@ -91,13 +92,13 @@ public class formNguoiDung extends javax.swing.JFrame {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 119, 52));
 
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jButton2.setText("Thi");
+        jButton2.setText("Thống kê");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, 119, 52));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 320, 119, 52));
 
         btnDeThi.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnDeThi.setText("Đề thi");
@@ -106,7 +107,7 @@ public class formNguoiDung extends javax.swing.JFrame {
                 btnDeThiActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDeThi, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 119, 53));
+        getContentPane().add(btnDeThi, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 119, 53));
 
         btnDAngXuat.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnDAngXuat.setText("Đăng xuất");
@@ -115,7 +116,7 @@ public class formNguoiDung extends javax.swing.JFrame {
                 btnDAngXuatActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDAngXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, 119, 56));
+        getContentPane().add(btnDAngXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 410, 119, 56));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -191,9 +192,14 @@ public class formNguoiDung extends javax.swing.JFrame {
         });
         getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 210, 30, -1));
 
-        jLabel7.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/brg_xanhduong.jpg"))); // NOI18N
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 490));
+        jButton3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jButton3.setText("Thi");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 119, 52));
 
         setSize(new java.awt.Dimension(853, 504));
         setLocationRelativeTo(null);
@@ -245,6 +251,10 @@ private boolean checkButton = false;
             statement = connection.prepareCall(sql);        
             statement.execute();
             JOptionPane.showMessageDialog(this, "Cập nhật thành công");
+            formThongKe frm = new formThongKe();
+               
+                    frm.setVisible(true);
+                    dispose();
         } catch (SQLException ex) {
             Logger.getLogger(DbAccess.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -272,7 +282,7 @@ private boolean checkButton = false;
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        formThi frm = new  formThi();
+        formThongKe frm = new  formThongKe();
         frm.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -283,6 +293,10 @@ private boolean checkButton = false;
         frm.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnDeThiActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -329,6 +343,7 @@ private boolean checkButton = false;
     private javax.swing.JRadioButton cbNu;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -336,7 +351,6 @@ private boolean checkButton = false;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JPasswordField txtMatKhau;
     private javax.swing.JTextField txtTen;

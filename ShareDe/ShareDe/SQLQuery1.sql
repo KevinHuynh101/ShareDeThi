@@ -1,0 +1,201 @@
+﻿CREATE DATABASE [SHAREDETHI]
+GO
+USE SHAREDETHI
+go
+
+
+CREATE TABLE [TAIKHOAN] (
+  [TAIKHOAN_ID] INT IDENTITY(1,1) NOT NULL,
+  [EMAIL] VARCHAR(255) NOT NULL,
+  [MATKHAU] VARCHAR(255),
+  [TEN] VARCHAR(255) DEFAULT NULL,
+ -- status TINYINT DEFAULT 1,
+  [GIOITINH] TINYINT DEFAULT 0,
+  [NGAYSINH] DATETIME NOT NULL DEFAULT GETDATE(),
+  [PHANQUYEN] TINYINT DEFAULT NULL,
+  [OTP] VARCHAR(20) DEFAULT NULL,
+  [NGAYXACNHAN] DATETIME DEFAULT NULL,
+  [BLOCK] TINYINT DEFAULT 0,
+  [BLOCKTAODE] TINYINT DEFAULT 0,
+  [BLOCKTHI] TINYINT DEFAULT 0,
+);
+ALTER TABLE [TAIKHOAN] ADD CONSTRAINT [PK_TAIKHOAN] PRIMARY KEY ([TAIKHOAN_ID])
+go
+
+SET IDENTITY_INSERT [TAIKHOAN] ON 
+INSERT [TAIKHOAN]([TAIKHOAN_ID],[EMAIL],[MATKHAU],[TEN],[GIOITINH],[NGAYSINH],[PHANQUYEN],[OTP],[NGAYXACNHAN],[BLOCK],[BLOCKTAODE],[BLOCKTHI])
+VALUES (1,N'kimdong240502@gmail.com',N'huynhnam',N'nam',1,N'2022-01-06',1,12345,null,0,0,0)
+INSERT [TAIKHOAN]([TAIKHOAN_ID],[EMAIL],[MATKHAU],[TEN],[GIOITINH],[NGAYSINH],[PHANQUYEN],[OTP],[NGAYXACNHAN],[BLOCK],[BLOCKTAODE],[BLOCKTHI])
+VALUES (2,N'kimdong240502@gmail.com',N'huynhnam',N'nam',1,N'2022-01-06',1,12345,null,0,0,0)
+SET IDENTITY_INSERT [TAIKHOAN] OFF
+
+
+CREATE TABLE [TOA](
+	[TOA_ID] NVARCHAR(50) NOT NULL PRIMARY KEY,
+	[TENTOA] NVARCHAR(50),
+)
+INSERT[TOA]([TOA_ID],[TENTOA]) VALUES (N'E1',N'Tòa E1 ')
+INSERT[TOA]([TOA_ID],[TENTOA]) VALUES (N'E2',N'Tòa E2 ')
+
+CREATE TABLE [TANG](
+	[TANG_ID] NVARCHAR(50) NOT NULL PRIMARY KEY,
+	[TENTANG] NVARCHAR(50),
+)
+INSERT[TANG]([TANG_ID],[TENTANG]) VALUES (N'1',N'Tầng 1 ')
+INSERT[TANG]([TANG_ID],[TENTANG]) VALUES (N'2',N'Tầng 2 ')
+INSERT[TANG]([TANG_ID],[TENTANG]) VALUES (N'3',N'Tầng 3')
+
+CREATE TABLE [PHONG](
+	[PHONG_ID] NVARCHAR(50) NOT NULL PRIMARY KEY,
+	[TENPHONG] NVARCHAR(50),
+)
+INSERT[PHONG]([PHONG_ID],[TENPHONG]) VALUES (N'1',N'Phòng 1 ')
+INSERT[PHONG]([PHONG_ID],[TENPHONG]) VALUES (N'2',N'Phòng 2 ')
+INSERT[PHONG]([PHONG_ID],[TENPHONG]) VALUES (N'3',N'Phòng 3 ')
+INSERT[PHONG]([PHONG_ID],[TENPHONG]) VALUES (N'4',N'Phòng 4 ')
+
+
+CREATE TABLE [LOP](
+	[LOP_ID] NVARCHAR(50) NOT NULL PRIMARY KEY,
+	[TENLOP] NVARCHAR(50),
+	[TOA_ID] NVARCHAR(50),
+	[TANG_ID] NVARCHAR(50),
+	[PHONG_ID] NVARCHAR(50),
+)
+ALTER TABLE [LOP] ADD CONSTRAINT fk_LOP_TOA FOREIGN KEY ([TOA_ID]) REFERENCES [TOA] ([TOA_ID]);
+ALTER TABLE [LOP] ADD CONSTRAINT fk_LOP_TANG FOREIGN KEY ([TANG_ID]) REFERENCES [TANG] ([TANG_ID]);
+ALTER TABLE [LOP] ADD CONSTRAINT fk_LOP_PHONG FOREIGN KEY ([PHONG_ID]) REFERENCES [PHONG] ([PHONG_ID]);
+INSERT[LOP]([LOP_ID],[TENLOP],[TOA_ID],[TANG_ID],[PHONG_ID]) VALUES (N'E1.01.01',N'Tòa E1 tầng 1 phòng 01',N'E1',1,1)
+INSERT[LOP]([LOP_ID],[TENLOP],[TOA_ID],[TANG_ID],[PHONG_ID]) VALUES (N'E2.01.01',N'Tòa E2 tầng 1 phòng 01',N'E2',1,1)
+
+
+CREATE TABLE [CHUDE] (
+  [CHUDE_ID] INT IDENTITY(1,1) NOT NULL,
+  [TENCHUDE] NVARCHAR(255) NOT NULL,
+  [LOP_ID] NVARCHAR(50) NOT NULL,
+  [SOCAUHOI] INT DEFAULT 0,
+  [TIME] INT DEFAULT 0,
+  [TAIKHOAN_ID] INT NOT NULL
+)
+ALTER TABLE [CHUDE] ADD CONSTRAINT [PK_CHUDE] PRIMARY KEY ([CHUDE_ID])
+go
+ALTER TABLE [CHUDE] ADD CONSTRAINT fk_CHUDE_LOP FOREIGN KEY ([LOP_ID]) REFERENCES [LOP] ([LOP_ID]);
+ALTER TABLE [CHUDE] ADD CONSTRAINT fk_CHUDE_TAIKHOAN FOREIGN KEY ([TAIKHOAN_ID]) REFERENCES [TAIKHOAN] ([TAIKHOAN_ID]);
+SET IDENTITY_INSERT [CHUDE] ON
+INSERT [CHUDE] ([CHUDE_ID],[TENCHUDE],[LOP_ID],[SOCAUHOI],[TIME],[TAIKHOAN_ID])VALUES(1,N'Lập Trinh Mạng',N'E1.01.01',4,30,1)
+INSERT [CHUDE] ([CHUDE_ID],[TENCHUDE],[LOP_ID],[SOCAUHOI],[TIME],[TAIKHOAN_ID])VALUES(2,N'Lịch sử',N'E2.01.01',4,30,2)
+SET IDENTITY_INSERT [CHUDE] OFF
+
+
+CREATE TABLE [BODE]
+(
+ [BODE_ID] Int IDENTITY(1,1) NOT NULL,
+ [CHUDE_ID] INT NOT NULL,
+ [NOIDUNG] Ntext NULL,
+ [A] Ntext NULL,
+ [B] Ntext NULL,
+ [C] Ntext NULL,
+ [D] Ntext NULL,
+ [DAP_AN] Char(1) NULL
+)
+go
+ALTER TABLE [BODE] ADD CONSTRAINT [PK_BODE] PRIMARY KEY ([BODE_ID])
+go
+ALTER TABLE [BODE] ADD CONSTRAINT fk_BODE_CHUDE FOREIGN KEY ([CHUDE_ID]) REFERENCES [CHUDE] ([CHUDE_ID]) ON DELETE CASCADE;
+GO
+SET IDENTITY_INSERT [BODE] ON
+INSERT [BODE] ([BODE_ID],[CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,1,N'Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([BODE_ID],[CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(2,1,N'2.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([BODE_ID],[CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(3,1,N'3.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([BODE_ID],[CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(4,1,N'4.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([BODE_ID],[CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(5,1,N'5.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([BODE_ID],[CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(6,1,N'6.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([BODE_ID],[CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(7,1,N'7.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+SET IDENTITY_INSERT [BODE] OFF
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'23.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'15.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+INSERT [BODE] ([CHUDE_ID],[NOIDUNG],[A],[B],[C],[D],[DAP_AN]) VALUES 
+(1,N'15.Thiết bị hub thông thường nằm ở tầng nào của mô hình OSI?',N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tất cả đều sai ','A')
+
+
+CREATE TABLE [CHUDE_TAIKHOAN] (
+  [ID] INT IDENTITY(1,1) NOT NULL,
+  [TAIKHOAN_ID] INT NOT NULL,
+  [CHUDE_ID] INT NOT NULL,
+  [SCORE] FLOAT DEFAULT NULL
+)
+ALTER TABLE [CHUDE_TAIKHOAN] ADD CONSTRAINT [PK_CHUDE_TAIKHOAN] PRIMARY KEY ([ID])
+go
+ALTER TABLE [CHUDE_TAIKHOAN] ADD CONSTRAINT fk_CHUDE_TAIKHOAN01 FOREIGN KEY ([CHUDE_ID]) REFERENCES [CHUDE] ([CHUDE_ID]);
+GO
+ALTER TABLE [CHUDE_TAIKHOAN] ADD CONSTRAINT fk_TAIKHOAN_CHUDE FOREIGN KEY ([TAIKHOAN_ID]) REFERENCES [TAIKHOAN] ([TAIKHOAN_ID]);
+GO
+
+CREATE TABLE [BODE_TAIKHOAN] (
+  [ID] INT IDENTITY(1,1) NOT NULL,
+  [TAIKHOAN_ID] INT NOT NULL,
+  [BODE_ID] INT NOT NULL,
+  [SCORE] FLOAT DEFAULT NULL
+)
+ALTER TABLE [BODE_TAIKHOAN] ADD CONSTRAINT [PK_BODE_TAIKHOAN] PRIMARY KEY ([ID])
+go
+ALTER TABLE [BODE_TAIKHOAN] ADD CONSTRAINT fk_BODE_TAIKHOAN02 FOREIGN KEY ([BODE_ID]) REFERENCES [BODE] ([BODE_ID]);
+GO
+ALTER TABLE [BODE_TAIKHOAN] ADD CONSTRAINT fk_TAIKHOAN_BODE FOREIGN KEY ([TAIKHOAN_ID]) REFERENCES [TAIKHOAN] ([TAIKHOAN_ID]);
+GO
+
+CREATE TABLE [SCORE](
+	[CORE_ID] INT IDENTITY(1,1) NOT NULL,
+	[TAIKHOAN_ID] INT NOT NULL,
+	[SCORE] FLOAT DEFAULT NULL,
+	[CHUDE_ID] INT NOT NULL,
+)
+ALTER TABLE [SCORE] ADD CONSTRAINT fk_TAIKHOAN_SCORE FOREIGN KEY ([TAIKHOAN_ID]) REFERENCES [TAIKHOAN] ([TAIKHOAN_ID]);
+GO
+ALTER TABLE [SCORE] ADD CONSTRAINT fk_CHUDE_SCORE FOREIGN KEY ([CHUDE_ID]) REFERENCES [CHUDE] ([CHUDE_ID]);
+GO
+
+//chứa các  quyền account
+CREATE TABLE [BIN](
+	[ID] int PRIMARY KEY NOT NULL,
+	[ID_TAIKHOAN] INT  NULL,
+	[BLOCK] TINYINT DEFAULT 0,
+	[BLOCKTAODE] TINYINT DEFAULT 0,
+	[BLOCKTHI] TINYINT DEFAULT 0,
+	[ID_CHUDE]	INT,
+	[SOCAUHOI]	INT,
+	[THOIGIAN] INT,
+)
