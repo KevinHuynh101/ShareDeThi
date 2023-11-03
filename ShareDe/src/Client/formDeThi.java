@@ -6,6 +6,10 @@ package Client;
 
 import Data.Bin;
 import Data.ChuDe;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -414,44 +418,69 @@ public class formDeThi extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        // TODO add your handling code here:
-        Connection connection = null;
-        PreparedStatement statement = null;
-        String ten = txtTenChuDe.getText();
-        String phongthi = (String) cbPhongThi.getSelectedItem();
-        String socauhoi = txtSoCauHoi.getText();
-        String thoigian = txtThoiGian.getText();
-        if(ten.isEmpty()){
-            JOptionPane.showMessageDialog(this, "Không được để trống tên chủ đề ");
-        }
-        else{
-            try {
-            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
-                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
-            connection = DriverManager.getConnection(URL);
-            String sql = "insert into CHUDE(TENCHUDE, LOP_ID, SOCAUHOI, TIME, TAIKHOAN_ID) values(N'"+ten+"',N'"+phongthi+"','"+socauhoi+"',N'"+thoigian+"',N'"+taikhoan_id+"')";
-            statement = connection.prepareCall(sql);        
-            statement.execute();
-        } catch (SQLException ex) {
-            Logger.getLogger(formDeThi.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if(statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(formDeThi.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+        try {
+            // TODO add your handling code here:
+            int id_taikhoan = Client.formLogin.id_taiKhoan;
+            String send = "";
+            String flag = "3";
             
-            if (connection != null) {
+            send += flag;
+            send += "///";
+            
+            send += id_taikhoan;
+            send += "///";
+            Socket socket = new Socket("localhost", 8000);
+            DataInputStream dis = new DataInputStream(socket.getInputStream());
+            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+            dos.writeUTF(send);
+             String receive = dis.readUTF();
+             if ("0".equals(receive)) {
+                             Connection connection = null;
+            PreparedStatement statement = null;
+            String ten = txtTenChuDe.getText();
+            String phongthi = (String) cbPhongThi.getSelectedItem();
+            String socauhoi = txtSoCauHoi.getText();
+            String thoigian = txtThoiGian.getText();
+            if(ten.isEmpty()){
+                JOptionPane.showMessageDialog(this, "Không được để trống tên chủ đề ");
+            }
+            else{
                 try {
-                    connection.close();
+                    String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
+                            "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
+                    connection = DriverManager.getConnection(URL);
+                    String sql = "insert into CHUDE(TENCHUDE, LOP_ID, SOCAUHOI, TIME, TAIKHOAN_ID) values(N'"+ten+"',N'"+phongthi+"','"+socauhoi+"',N'"+thoigian+"',N'"+taikhoan_id+"')";
+                    statement = connection.prepareCall(sql);
+                    statement.execute();
                 } catch (SQLException ex) {
                     Logger.getLogger(formDeThi.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    if(statement != null) {
+                        try {
+                            statement.close();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(formDeThi.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    
+                    if (connection != null) {
+                        try {
+                            connection.close();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(formDeThi.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                 }
-            }
-        }
-        showChuDe();
+                showChuDe();
+                socket.close();
+                }
+             } else {
+                        JOptionPane.showMessageDialog(null, "Tài khoản bị khóa chức năng thêm đề thi");
+                        socket.close();
+                    }
+
+        } catch (IOException ex) {
+            Logger.getLogger(formDeThi.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_btnThemActionPerformed

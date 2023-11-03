@@ -389,7 +389,10 @@ public final class formThiTN extends javax.swing.JFrame {
             }
         }
          dem = -1;
+         
         try {
+            /* được sử dụng để duyệt qua các kết quả trả về từ truy vấn. Trong vòng lặp này, kiểm tra xem câu hỏi có được chọn (
+            dựa trên giá trị của soCau[dem]), và nếu có, lấy thông tin về câu hỏi từ ResultSet và nối nó vào chuỗi str.*/
         DbAccess acc = new DbAccess();
         ResultSet rs = acc.Query(sql);
             while (rs.next()) {

@@ -41,9 +41,7 @@ public class formLogin extends javax.swing.JFrame {
     String secretKey = "huynhnam";
     String salt = "nhuhuynh";
     int id;
-    /**
-     * Creates new form formLoginDB
-     */
+
     public static int id_taiKhoan;
     public formLogin() {
         initComponents();
@@ -247,7 +245,7 @@ public class formLogin extends javax.swing.JFrame {
                id = std.getTAIKHOAN_ID();
                matkhau = std.getMATKHAU();
             }
-           String decryptedString = decrypt(matkhau, secretKey, salt);
+            String decryptedString = decrypt(matkhau, secretKey, salt);
             System.out.println("decryptedString :"+decryptedString);
             ResultSet rs = acc.Query(QueryStr);
             
@@ -255,10 +253,27 @@ public class formLogin extends javax.swing.JFrame {
                 if(pass.equals(decryptedString)){ 
                     id_taiKhoan= id;
                     LuuId(id);
-                    JOptionPane.showMessageDialog(this, "Đăng nhập thành công ");
-                    formNguoiDung frm = new formNguoiDung();
-                    frm.setVisible(true);
-                    dispose();
+                    Socket socket = new Socket("localhost", 8000);
+                    DataInputStream dis = new DataInputStream(socket.getInputStream());
+                    DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+                    String send = "";
+                    String flag = "2";
+                    send += flag;
+                    send += "///";
+                    send += id;
+                    send += "///";
+                    dos.writeUTF(send);
+                    String receive = dis.readUTF();
+                    if ("0".equals(receive)) {
+                        JOptionPane.showMessageDialog(this, "Đăng nhập thành công ");
+                        formNguoiDung frm = new formNguoiDung();
+                        frm.setVisible(true);
+                        dispose();
+                        socket.close();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Tài khoản bị khóa");
+                    }
+                    
                 }else{
                     JOptionPane.showMessageDialog(this, "Mật khẩu không chính xác");
                 }

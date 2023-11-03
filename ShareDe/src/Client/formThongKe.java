@@ -4,6 +4,10 @@
  */
 package Client;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -271,16 +275,15 @@ public class formThongKe extends javax.swing.JFrame {
                                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(lbDiemTrungBinh, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbBoDe3, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnCount, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lbCount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cbBoDe3, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnCount, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(lbCount, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -366,9 +369,9 @@ public class formThongKe extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbBoDe3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCount)
                             .addComponent(jLabel6)
-                            .addComponent(lbCount))
+                            .addComponent(lbCount)
+                            .addComponent(btnCount))
                         .addGap(18, 18, 18)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnDAngXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -416,162 +419,95 @@ public class formThongKe extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-         Connection connection = null;
-        Statement statement = null;
-        String std = null;
-        String bode = (String) cbBoDe.getSelectedItem();
              try {
-            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
-                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
-            connection = DriverManager.getConnection(URL);
-            String sql = "SELECT MAX(SCORE.SCORE) AS MAXDIEM FROM SCORE JOIN CHUDE ON SCORE.CHUDE_ID=CHUDE.CHUDE_ID WHERE CHUDE.TENCHUDE = N'"+bode+"'";
-            statement = connection.createStatement();           
-            ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {                
-                 std = resultSet.getString("MAXDIEM");
-            }
-            lbDiemCaoNhat.setText(std);
-        } catch (SQLException ex) {
-            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if(statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            Socket socket = new Socket("localhost", 8000);
+            DataInputStream dis = new DataInputStream(socket.getInputStream());
+            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+            String send = "";
+            String flag = "8";
+            send += flag;
+            send += "///";
+            send += (String) cbBoDe.getSelectedItem() ;
+            send += "///";
+            dos.writeUTF(send);
+            String receive = dis.readUTF();
+            lbDiemCaoNhat.setText(receive);
+            socket.close();
+        } catch (IOException ex) {
+//            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                lbDiemCaoNhat.setText("0");
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void btnAvgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvgActionPerformed
         // TODO add your handling code here:
-        Connection connection = null;
-        Statement statement = null;
-        String std = null;
-        String bode = (String) cbBoDe2.getSelectedItem();
-             try {
-            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
-                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
-            connection = DriverManager.getConnection(URL);
-            String sql = "SELECT AVG(SCORE.SCORE) AS AVGDIEM FROM SCORE JOIN CHUDE ON SCORE.CHUDE_ID=CHUDE.CHUDE_ID WHERE CHUDE.TENCHUDE = N'"+bode+"'";
-            statement = connection.createStatement();           
-            ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {                
-                 std = resultSet.getString("AVGDIEM");
-               
-            }
-            lbDiemTrungBinh.setText(std);
-        } catch (SQLException ex) {
-            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if(statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+         try {
+            Socket socket = new Socket("localhost", 8000);
+            DataInputStream dis = new DataInputStream(socket.getInputStream());
+            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+            String send = "";
+            String flag = "7";
+            send += flag;
+            send += "///";
+            send += (String) cbBoDe2.getSelectedItem() ;
+            send += "///";
+            dos.writeUTF(send);
+            String receive = dis.readUTF();
+            lbDiemTrungBinh.setText(receive);
+            socket.close();
+        } catch (IOException ex) {
+//            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                lbDiemTrungBinh.setText("0");
         }
     }//GEN-LAST:event_btnAvgActionPerformed
 
     private void btnCountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCountActionPerformed
         // TODO add your handling code here:
-                Connection connection = null;
-        Statement statement = null;
-        String std = null;
-        String bode = (String) cbBoDe3.getSelectedItem();
-             try {
-            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
-                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
-            connection = DriverManager.getConnection(URL);
-            String sql = "SELECT  COUNT(DISTINCT SCORE.TAIKHOAN_ID) AS COUNT FROM SCORE JOIN CHUDE ON SCORE.CHUDE_ID=CHUDE.CHUDE_ID WHERE CHUDE.TENCHUDE = N'"+bode+"' GROUP BY SCORE.CHUDE_ID  ;";
-            statement = connection.createStatement();           
-            ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {                
-                 std = resultSet.getString("COUNT");
-               
-            }
-            lbCount.setText(std);
-        } catch (SQLException ex) {
-            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if(statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+         try {
+            Socket socket = new Socket("localhost", 8000);
+            DataInputStream dis = new DataInputStream(socket.getInputStream());
+            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+            String send = "";
+            String flag = "9";
+            send += flag;
+            send += "///";
+            send += (String) cbBoDe3.getSelectedItem() ;
+            send += "///";
+            dos.writeUTF(send);
+            String receive = dis.readUTF();
+            lbCount.setText(receive);
+            socket.close();
+        } catch (IOException ex) {
+//            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                lbCount.setText("0");
         }
     }//GEN-LAST:event_btnCountActionPerformed
 
     private void btnCount1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCount1ActionPerformed
         // TODO add your handling code here:
-        Connection connection = null;
-        Statement statement = null;
-        String std = null;
-        String bode = (String) cbBoDe4.getSelectedItem();
-             try {
-            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
-                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
-            connection = DriverManager.getConnection(URL);
-            String sql = "SELECT  COUNT(SCORE.TAIKHOAN_ID) AS COUNT FROM SCORE JOIN CHUDE ON SCORE.CHUDE_ID=CHUDE.CHUDE_ID WHERE CHUDE.TENCHUDE = N'"+bode+"' GROUP BY SCORE.CHUDE_ID  ;";
-            statement = connection.createStatement();           
-            ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {                
-                 std = resultSet.getString("COUNT");
-               
-            }
-            lbCount1.setText(std);
-        } catch (SQLException ex) {
-            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if(statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+         try {
+            Socket socket = new Socket("localhost", 8000);
+            DataInputStream dis = new DataInputStream(socket.getInputStream());
+            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+            String send = "";
+            String flag = "10";
+            send += flag;
+            send += "///";
+            send += (String) cbBoDe4.getSelectedItem() ;
+            send += "///";
+            dos.writeUTF(send);
+            String receive = dis.readUTF();
+            lbCount1.setText(receive);
+            socket.close();
+        } catch (IOException ex) {
+//            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                lbCount1.setText("0");
         }
     }//GEN-LAST:event_btnCount1ActionPerformed
 
     private void btntaikhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntaikhoanActionPerformed
         // TODO add your handling code here:
-        Connection connection = null;
+         Connection connection = null;
         Statement statement = null;
         List<String> listTen = new ArrayList<>();;
         String bode = (String) cbBoDe5.getSelectedItem();
@@ -623,6 +559,7 @@ public class formThongKe extends javax.swing.JFrame {
                 }
             }
         }
+
     }//GEN-LAST:event_btntaikhoanActionPerformed
 
     private void cbBoDeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbBoDeMouseClicked
@@ -721,80 +658,38 @@ public class formThongKe extends javax.swing.JFrame {
     private javax.swing.JLabel lbDiemTrungBinh;
     // End of variables declaration//GEN-END:variables
     public void CountChuDe(){
-               Connection connection = null;
-        Statement statement = null;
-        String std = null;
-        String bode = (String) cbBoDe4.getSelectedItem();
              try {
-            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
-                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
-            connection = DriverManager.getConnection(URL);
-            String sql = "SELECT  COUNT(CHUDE_ID) AS COUNTCD FROM CHUDE ;";
-            statement = connection.createStatement();           
-            ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {                
-                 std = resultSet.getString("COUNTCD");
-               
-            }
-                 System.out.println("std" +std);
-            btnCountDeThi.setText(std);
-        } catch (SQLException ex) {
+                 Socket socket = new Socket("localhost", 8000);
+                 DataInputStream dis = new DataInputStream(socket.getInputStream());
+                 DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+                 String send = "";
+                 String flag = "5";
+                 send += flag;
+                 send += "///";
+                 dos.writeUTF(send);
+                 String receive = dis.readUTF();
+                 btnCountDeThi.setText(receive);
+                 socket.close();
+             } catch (IOException ex) {
             Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if(statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         
     }
     public void CountCauHoi(){
-        Connection connection = null;
-        Statement statement = null;
-        String std = null;
-             try {
-            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
-                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
-            connection = DriverManager.getConnection(URL);
-            String sql = "SELECT  COUNT(BODE_ID) AS COUNTBD FROM BODE ;";
-            statement = connection.createStatement();           
-            ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {                
-                 std = resultSet.getString("COUNTBD");
-               
-            }
-                 System.out.println("std" +std);
-            btnCountCauHoi.setText(std);
-        } catch (SQLException ex) {
+        try {
+            Socket socket = new Socket("localhost", 8000);
+            DataInputStream dis = new DataInputStream(socket.getInputStream());
+            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+            String send = "";
+            String flag = "6";
+            send += flag;
+            send += "///";
+            dos.writeUTF(send);
+            String receive = dis.readUTF();
+            btnCountCauHoi.setText(receive);
+            socket.close();
+        } catch (IOException ex) {
             Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if(statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
-        
     }
 }

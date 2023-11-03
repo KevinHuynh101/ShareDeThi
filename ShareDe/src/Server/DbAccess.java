@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Server;
+import Client.formThongKe;
 import Data.Bin;
 import Data.TaiKhoan;
 import java.security.SecureRandom;
@@ -54,19 +55,17 @@ public class DbAccess {
         }
     }
     public static boolean DangNhap(String str) {
+   
         boolean check = false;
         Connection connection = null;
-        int id= 0;
         String matkhau = null;
-        String decryptedString = null;
+        int block = 0;
         try {
         Connection conn = null;
         String[] arrStr = str.split("///");
-        System.out.println( "\nUsername: " + arrStr[1] + "\nPassword: " + arrStr[2]);
-        
-        String name = arrStr[1];
-        String pass = arrStr[2];
-        String QueryStr = "select * from TAIKHOAN where EMAIL =N'"+name+"' and MATKHAU=N'"+pass+"'";
+//        System.out.println( "\nid_taikhoan: " + arrStr[1]);       
+        String id_TaiKhoan = arrStr[1];
+        String QueryStr = "select * from TAIKHOAN where TAIKHOAN_ID = '"+id_TaiKhoan+"'";
         DbAccess acc = new DbAccess();
 
         ResultSet rsl = acc.Query(QueryStr);
@@ -75,13 +74,11 @@ public class DbAccess {
                         rsl.getString("EMAIL"),rsl.getString("TEN"),rsl.getString("OTP") ,rsl.getString("MATKHAU"), 
                         rsl.getBoolean("GIOITINH"),rsl.getBoolean("PHANQUYEN"),rsl.getDate("NGAYSINH")
                         ,rsl.getDate("NGAYXACNHAN"));
-               id = std.getTAIKHOAN_ID();
-               matkhau = std.getMATKHAU();
+               block = std.getBLOCK();
+
             }
-        DbAccess.LuuId(id);
-        ResultSet rs = acc.Query(QueryStr);
-        System.out.println("rs = "+rs);
-        if (rs.next()){
+
+        if (block == 1){
             check = true;
         }
         else{
@@ -91,7 +88,7 @@ public class DbAccess {
             ex.printStackTrace();
         } 
         
-        System.out.println(check);
+//        System.out.println(check);
         return check;
     }
     
@@ -128,122 +125,388 @@ public class DbAccess {
             }
         }      
     }
+    public static boolean CheckBlockAdd(String str) {
+   
+        boolean check = false;
+        Connection connection = null;
+        String matkhau = null;
+        int block = 0;
+        try {
+        Connection conn = null;
+        String[] arrStr = str.split("///");
+//        System.out.println( "\nid_taikhoan: " + arrStr[1]);       
+        String id_TaiKhoan = arrStr[1];
+        String QueryStr = "select * from TAIKHOAN where TAIKHOAN_ID = '"+id_TaiKhoan+"'";
+        DbAccess acc = new DbAccess();
 
-    public  String decrypt(String strToDecrypt, String secretKey, String salt) {
+        ResultSet rsl = acc.Query(QueryStr);
+        while (rsl.next()) {                
+                TaiKhoan std = new TaiKhoan(rsl.getInt("TAIKHOAN_ID"),rsl.getInt("BLOCK"),rsl.getInt("BLOCKTAODE"),rsl.getInt("BLOCKTHI"),
+                        rsl.getString("EMAIL"),rsl.getString("TEN"),rsl.getString("OTP") ,rsl.getString("MATKHAU"), 
+                        rsl.getBoolean("GIOITINH"),rsl.getBoolean("PHANQUYEN"),rsl.getDate("NGAYSINH")
+                        ,rsl.getDate("NGAYXACNHAN"));
+               block = std.getBLOCKTAODE();
 
-    try {
+            }
 
-        byte[] encryptedData = Base64.getDecoder().decode(strToDecrypt);
-        byte[] iv = new byte[16];
-        System.arraycopy(encryptedData, 0, iv, 0, iv.length);
-        IvParameterSpec ivspec = new IvParameterSpec(iv);
-
-        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-        KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), salt.getBytes(), ITERATION_COUNT, KEY_LENGTH);
-        SecretKey tmp = factory.generateSecret(spec);
-        SecretKeySpec secretKeySpec = new SecretKeySpec(tmp.getEncoded(), "AES");
-
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivspec);
-
-        byte[] cipherText = new byte[encryptedData.length - 16];
-        System.arraycopy(encryptedData, 16, cipherText, 0, cipherText.length);
-
-        byte[] decryptedText = cipher.doFinal(cipherText);
-        return new String(decryptedText, "UTF-8");
-    } catch (Exception e) {
-        // Handle the exception properly
-        e.printStackTrace();
-        return null;
+        if (block == 1){
+            check = true;
         }
+        else{
+            check = false;
+        }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } 
+        return check;
     }
-    public static String encrypt(String strToEncrypt, String secretKey, String salt) {
+    public static boolean CheckBlockThi(String str) {
+   
+        boolean check = false;
+        Connection connection = null;
+        String matkhau = null;
+        int block = 0;
+        try {
+        Connection conn = null;
+        String[] arrStr = str.split("///");
+//        System.out.println( "\nid_taikhoan: " + arrStr[1]);       
+        String id_TaiKhoan = arrStr[1];
+        String QueryStr = "select * from TAIKHOAN where TAIKHOAN_ID = '"+id_TaiKhoan+"'";
+        DbAccess acc = new DbAccess();
 
-    try {
+        ResultSet rsl = acc.Query(QueryStr);
+        while (rsl.next()) {                
+                TaiKhoan std = new TaiKhoan(rsl.getInt("TAIKHOAN_ID"),rsl.getInt("BLOCK"),rsl.getInt("BLOCKTAODE"),rsl.getInt("BLOCKTHI"),
+                        rsl.getString("EMAIL"),rsl.getString("TEN"),rsl.getString("OTP") ,rsl.getString("MATKHAU"), 
+                        rsl.getBoolean("GIOITINH"),rsl.getBoolean("PHANQUYEN"),rsl.getDate("NGAYSINH")
+                        ,rsl.getDate("NGAYXACNHAN"));
+               block = std.getBLOCKTAODE();
 
-        SecureRandom secureRandom = new SecureRandom();
-        byte[] iv = new byte[16];
-        secureRandom.nextBytes(iv);
-        IvParameterSpec ivspec = new IvParameterSpec(iv);
+            }
 
-        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-        KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), salt.getBytes(), ITERATION_COUNT, KEY_LENGTH);
-        SecretKey tmp = factory.generateSecret(spec);
-        SecretKeySpec secretKeySpec = new SecretKeySpec(tmp.getEncoded(), "AES");
+        if (block == 1){
+            check = true;
+        }
+        else{
+            check = false;
+        }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } 
 
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivspec);
-
-        byte[] cipherText = cipher.doFinal(strToEncrypt.getBytes("UTF-8"));
-        byte[] encryptedData = new byte[iv.length + cipherText.length];
-        System.arraycopy(iv, 0, encryptedData, 0, iv.length);
-        System.arraycopy(cipherText, 0, encryptedData, iv.length, cipherText.length);
-
-        return Base64.getEncoder().encodeToString(encryptedData);
-    } catch (Exception e) {
-        // Handle the exception properly
-        e.printStackTrace();
-        return null;
+        return check;
     }
-  }
-//    public static String getAllCauHoi() {
-//
-//        int id_ChuDe = 0;
-//        int socauhoi = 0 ;
-//
-//        System.out.println("id_chude :"+id_ChuDe);
-//        int[] soCau = new int[40];
-//
-//        PreparedStatement statement = null;
-//        Arrays.fill(soCau, 0);// tạo một danh sách câu hỏi có độ dài 32, ác câu hỏi đều chưa được chọn (0)
-//        String sql = "SELECT * FROM BODE WHERE CHUDE_ID = '"+id_ChuDe+"'";
-//        Random rand = new Random();
-//        int dem = 0;//đếm số lượng câu hỏi đã được chọn.
-//        while (dem < socauhoi) {//chọn đủ 10 câu hỏi.
-//
-//            int k = rand.nextInt(20);//random 0-19
-//            if (soCau[k] != 1) {
-//                soCau[k] = 1;//k là đã được chọn bằng cách gán giá trị 1 
-//                dem++;//thêm một câu hỏi.
-//            }
-//        }
-//         dem = -1;
-//        String str = "";
-//        try {
-//        DbAccess acc = new DbAccess();
-//
-//        ResultSet rs = acc.Query(sql);
-//            while (rs.next()) {
-//                dem++;
-//                if (soCau[dem] > 0) {
-//                    str += rs.getString("BODE_ID");
-//                    str += "///";
-//                    str += rs.getString("CHUDE_ID");
-//                    str += "///";
-//                    str += rs.getString("NOIDUNG");
-//                    str += "///";
-//                    str += rs.getString("A");
-//                    str += "///";
-//                    str += rs.getString("B");
-//                    str += "///";
-//                    str += rs.getString("C");
-//                    str += "///";
-//                    str += rs.getString("D");
-//                    str += "///";
-//                    str += rs.getString("DAP_AN");
-//                    str += "///";
-//                }
-//            }
-//
-//            System.out.println(str);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(DbAccess.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return str;
-//    }
-    
-
-    
+    public static String CountChuDe(){
+        Connection connection = null;
+        Statement statement = null;
+        String std = null;
+//        String bode = (String) cbBoDe4.getSelectedItem();
+             try {
+            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
+                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
+            connection = DriverManager.getConnection(URL);
+            String sql = "SELECT  COUNT(CHUDE_ID) AS COUNTCD FROM CHUDE ;";
+            statement = connection.createStatement();           
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {                
+                 std = resultSet.getString("COUNTCD");
+               
+            }
+                 System.out.println("Tổng số đề tài: "+std);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return std;
+        
+    }
+    public static String CountCauHoi(){
+        Connection connection = null;
+        Statement statement = null;
+        String std = null;
+             try {
+            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
+                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
+            connection = DriverManager.getConnection(URL);
+            String sql = "SELECT  COUNT(BODE_ID) AS COUNTBD FROM BODE ;";
+            statement = connection.createStatement();           
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {                
+                 std = resultSet.getString("COUNTBD");
+               
+            }
+                 System.out.println("Tổng số câu hỏi :" +std);
+//            btnCountCauHoi.setText(std);
+        } catch (SQLException ex) {
+            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+             return std;
+        
+    }
+    public static String TaiKhoanMax (String bode){
+        Connection connection = null;
+        Statement statement = null;
+        List<String> listTen = new ArrayList<>();
+        System.out.println("bode"+bode);
+        String name = "";
+//        String bode = (String) cbBoDe5.getSelectedItem();
+             try {
+            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
+                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
+            connection = DriverManager.getConnection(URL);
+            String sql = "WITH RankedScores AS (\n" +
+"    SELECT TAIKHOAN.TEN, SCORE.SCORE,\n" +
+"           DENSE_RANK() OVER (ORDER BY SCORE.SCORE DESC) AS Rank\n" +
+"    FROM SCORE\n" +
+"    JOIN CHUDE ON SCORE.CHUDE_ID = CHUDE.CHUDE_ID\n" +
+"    JOIN TAIKHOAN ON SCORE.TAIKHOAN_ID = TAIKHOAN.TAIKHOAN_ID\n" +
+"    WHERE CHUDE.TENCHUDE =  N'"+bode+"'\n" +
+")\n" +
+"SELECT TEN\n" +
+"FROM RankedScores\n" +
+"WHERE Rank <= 1;";
+            
+            statement = connection.createStatement();           
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {                
+                   name = resultSet.getString("TEN");
+                  name += resultSet.getString("///");
+//                  listTen.add(name);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        
+        }
+             System.out.println("name "+name);
+        return name;
+    }
+    public static String AvgScore (String bode){
+                Connection connection = null;
+        Statement statement = null;
+        String std = null;
+//        String bode = (String) cbBoDe2.getSelectedItem();
+             try {
+            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
+                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
+            connection = DriverManager.getConnection(URL);
+            String sql = "SELECT AVG(SCORE.SCORE) AS AVGDIEM FROM SCORE JOIN CHUDE ON SCORE.CHUDE_ID=CHUDE.CHUDE_ID WHERE CHUDE.TENCHUDE = N'"+bode+"'";
+            statement = connection.createStatement();           
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {                
+                 std = resultSet.getString("AVGDIEM");
+               
+            }
+                 System.out.println("Avgscore :"+std);
+//            lbDiemTrungBinh.setText(std);
+        } catch (SQLException ex) {
+            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+             return std;
+    }
+    public static String MaxScore (String bode){
+        Connection connection = null;
+        Statement statement = null;
+        String std = null;
+//        String bode = (String) cbBoDe.getSelectedItem();
+             try {
+            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
+                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
+            connection = DriverManager.getConnection(URL);
+            String sql = "SELECT MAX(SCORE.SCORE) AS MAXDIEM FROM SCORE JOIN CHUDE ON SCORE.CHUDE_ID=CHUDE.CHUDE_ID WHERE CHUDE.TENCHUDE = N'"+bode+"'";
+            statement = connection.createStatement();           
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {                
+                 std = resultSet.getString("MAXDIEM");
+            }
+                 System.out.println("MaxScore :"+std);
+//            lbDiemCaoNhat.setText(std);
+        } catch (SQLException ex) {
+            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+             return std;
+    }
+    public static String CountSoNguoiLamDe (String bode){
+                       Connection connection = null;
+        Statement statement = null;
+        String std = null;
+//        String bode = (String) cbBoDe3.getSelectedItem();
+             try {
+            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
+                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
+            connection = DriverManager.getConnection(URL);
+            String sql = "SELECT  COUNT(DISTINCT SCORE.TAIKHOAN_ID) AS COUNT FROM SCORE JOIN CHUDE ON SCORE.CHUDE_ID=CHUDE.CHUDE_ID WHERE CHUDE.TENCHUDE = N'"+bode+"' GROUP BY SCORE.CHUDE_ID  ;";
+            statement = connection.createStatement();           
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {                
+                 std = resultSet.getString("COUNT");
+               
+            }
+                 System.out.println("Số người làm bộ đề "+bode+" là "+std);
+//            lbCount.setText(std);
+        } catch (SQLException ex) {
+            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+             return std;
+    }
+    public static String CountDeDuocLam (String bode){
+                Connection connection = null;
+        Statement statement = null;
+        String std = null;
+//        String bode = (String) cbBoDe4.getSelectedItem();
+             try {
+            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
+                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
+            connection = DriverManager.getConnection(URL);
+            String sql = "SELECT  COUNT(SCORE.TAIKHOAN_ID) AS COUNT FROM SCORE JOIN CHUDE ON SCORE.CHUDE_ID=CHUDE.CHUDE_ID WHERE CHUDE.TENCHUDE = N'"+bode+"' GROUP BY SCORE.CHUDE_ID  ;";
+            statement = connection.createStatement();           
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {                
+                 std = resultSet.getString("COUNT");
+               
+            }
+                 System.out.println("Số lần bộ đề "+bode+" đã được làm :"+std);
+//            lbCount1.setText(std);
+        } catch (SQLException ex) {
+            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+             return std;
+    }
+    public static String CountTaiKhoan(){
+        Connection connection = null;
+        Statement statement = null;
+        String std = null;
+             try {
+            String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
+                    "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
+            connection = DriverManager.getConnection(URL);
+            String sql = "SELECT  COUNT(TAIKHOAN_ID) AS COUNTTK FROM TAIKHOAN ;";
+            statement = connection.createStatement();           
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {                
+                 std = resultSet.getString("COUNTTK");
+               
+            }
+                 System.out.println("Số lượng người dùng :"+std);
+//            btnCountCauHoi.setText(std);
+        } catch (SQLException ex) {
+            Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+             return std;
+        
+    }
     
 }
   

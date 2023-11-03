@@ -4,6 +4,7 @@ import Server.ServerThread;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -25,6 +26,7 @@ public class Server {
             e.printStackTrace();
         }
     }
+//     private static CopyOnWriteArrayList<Socket> connectedClients = new CopyOnWriteArrayList<>();
 
     public void action() throws IOException {
         Socket socket = null;
@@ -33,7 +35,9 @@ public class Server {
         try {
             while ((socket = server.accept()) != null) {
                 new ServerThread(socket, "Client#" + i);
-                System.out.printf("Số người dùng đang online %d %n", i++);
+//                System.out.printf("Thread for Client#%d generating...%n", i++);
+//                connectedClients.add(socket);
+//                 System.out.println("Tổng số tài khoản đang online : " + connectedClients.size());
             } 
         } catch (Exception e) {
             e.printStackTrace();

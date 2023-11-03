@@ -6,6 +6,10 @@ package Client;
 
 
 import Data.ChuDe;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -228,11 +232,33 @@ public class formThi extends javax.swing.JFrame {
     }//GEN-LAST:event_tbChuDeMouseClicked
 
     private void btnThiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThiActionPerformed
-        // TODO add your handling code here:
-       LuuId_ChuDe();
-       formThiTN frm2 = new formThiTN();
-        frm2.setVisible(true);
-        dispose();
+        int id_taikhoan = Client.formLogin.id_taiKhoan; 
+        LuuId_ChuDe();
+        try {
+            // TODO add your handling code here:
+            Socket socket = new Socket("localhost", 8000);
+            DataInputStream dis = new DataInputStream(socket.getInputStream());
+            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+            String send = "";
+            String flag = "4";
+            send += flag;
+            send += "///";
+            send += id_taikhoan;
+            send += "///";
+            dos.writeUTF(send);
+            String receive = dis.readUTF();
+            if ("0".equals(receive)) {
+                formThiTN frm2 = new formThiTN();
+                frm2.setVisible(true);
+                dispose();
+                socket.close();
+            } else {
+                JOptionPane.showMessageDialog(null, "Tài khoản bị cấm thi");
+            }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(formThi.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnThiActionPerformed
 
     private void btnDeThiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeThiActionPerformed
