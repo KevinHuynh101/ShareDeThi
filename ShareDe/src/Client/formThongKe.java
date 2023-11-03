@@ -120,8 +120,14 @@ public class formThongKe extends javax.swing.JFrame {
         jLabel1.setText("Điểm số cao nhất của mỗi bộ đề :");
 
         cbBoDe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--------------------" }));
+        cbBoDe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbBoDeMouseClicked(evt);
+            }
+        });
 
         jButton4.setText("Thống kê");
+        jButton4.setEnabled(false);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -135,8 +141,14 @@ public class formThongKe extends javax.swing.JFrame {
         jLabel3.setText("Điểm số trung bình của  mỗi bộ đề :");
 
         cbBoDe2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--------------------" }));
+        cbBoDe2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbBoDe2MouseClicked(evt);
+            }
+        });
 
         btnAvg.setText("Thống kê");
+        btnAvg.setEnabled(false);
         btnAvg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAvgActionPerformed(evt);
@@ -150,8 +162,14 @@ public class formThongKe extends javax.swing.JFrame {
         jLabel5.setText("Số người đã làm bộ đề ( mỗi  tài khoản chỉ tính 1 lần) :");
 
         cbBoDe3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--------------------" }));
+        cbBoDe3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbBoDe3MouseClicked(evt);
+            }
+        });
 
         btnCount.setText("Thống kê");
+        btnCount.setEnabled(false);
         btnCount.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCountActionPerformed(evt);
@@ -165,8 +183,14 @@ public class formThongKe extends javax.swing.JFrame {
         jLabel7.setText("Số lần bộ đề đã được làm :");
 
         cbBoDe4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--------------------" }));
+        cbBoDe4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbBoDe4MouseClicked(evt);
+            }
+        });
 
         btnCount1.setText("Thống kê");
+        btnCount1.setEnabled(false);
         btnCount1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCount1ActionPerformed(evt);
@@ -180,8 +204,14 @@ public class formThongKe extends javax.swing.JFrame {
         jLabel8.setText("Tài khoản có điểm số cao nhất trong mỗi bộ đề :");
 
         cbBoDe5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--------------------" }));
+        cbBoDe5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbBoDe5MouseClicked(evt);
+            }
+        });
 
         btntaikhoan.setText("Thống kê");
+        btntaikhoan.setEnabled(false);
         btntaikhoan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btntaikhoanActionPerformed(evt);
@@ -569,6 +599,31 @@ public class formThongKe extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btntaikhoanActionPerformed
+
+    private void cbBoDeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbBoDeMouseClicked
+        // TODO add your handling code here:
+        jButton4.setEnabled(true);
+    }//GEN-LAST:event_cbBoDeMouseClicked
+
+    private void cbBoDe5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbBoDe5MouseClicked
+        // TODO add your handling code here:
+        btntaikhoan.setEnabled(true);
+    }//GEN-LAST:event_cbBoDe5MouseClicked
+
+    private void cbBoDe2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbBoDe2MouseClicked
+        // TODO add your handling code here:
+        btnAvg.setEnabled(true);
+    }//GEN-LAST:event_cbBoDe2MouseClicked
+
+    private void cbBoDe3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbBoDe3MouseClicked
+        // TODO add your handling code here:
+        btnCount.setEnabled(true);
+    }//GEN-LAST:event_cbBoDe3MouseClicked
+
+    private void cbBoDe4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbBoDe4MouseClicked
+        // TODO add your handling code here:
+        btnCount1.setEnabled(true);
+    }//GEN-LAST:event_cbBoDe4MouseClicked
 
     /**
      * @param args the command line arguments

@@ -89,7 +89,7 @@ public class formNguoiDung extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton1.setText("Người dùng");
         jButton1.setEnabled(false);
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 119, 52));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, 119, 52));
 
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton2.setText("Thống kê");
@@ -98,7 +98,7 @@ public class formNguoiDung extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 320, 119, 52));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, 119, 52));
 
         btnDeThi.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnDeThi.setText("Đề thi");
@@ -107,7 +107,7 @@ public class formNguoiDung extends javax.swing.JFrame {
                 btnDeThiActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDeThi, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 119, 53));
+        getContentPane().add(btnDeThi, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 190, 119, 53));
 
         btnDAngXuat.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnDAngXuat.setText("Đăng xuất");
@@ -116,7 +116,7 @@ public class formNguoiDung extends javax.swing.JFrame {
                 btnDAngXuatActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDAngXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 410, 119, 56));
+        getContentPane().add(btnDAngXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 360, 119, 56));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -199,7 +199,7 @@ public class formNguoiDung extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 119, 52));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 110, 119, 52));
 
         setSize(new java.awt.Dimension(853, 504));
         setLocationRelativeTo(null);
@@ -251,10 +251,7 @@ private boolean checkButton = false;
             statement = connection.prepareCall(sql);        
             statement.execute();
             JOptionPane.showMessageDialog(this, "Cập nhật thành công");
-            formThongKe frm = new formThongKe();
-               
-                    frm.setVisible(true);
-                    dispose();
+
         } catch (SQLException ex) {
             Logger.getLogger(DbAccess.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -296,6 +293,9 @@ private boolean checkButton = false;
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        formThi frm = new  formThi();
+        frm.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

@@ -77,6 +77,7 @@ public class formThi extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         btnThi = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -93,7 +94,7 @@ public class formThi extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton2.setText("Thi");
         jButton2.setEnabled(false);
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 176, 52));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 176, 52));
 
         btnDeThi.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnDeThi.setText("Đề thi");
@@ -102,7 +103,7 @@ public class formThi extends javax.swing.JFrame {
                 btnDeThiActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDeThi, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 176, 53));
+        getContentPane().add(btnDeThi, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 176, 53));
 
         jButton4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton4.setText("Đăng xuất");
@@ -111,7 +112,7 @@ public class formThi extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 390, 176, 56));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, 176, 56));
 
         tbChuDe.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -190,6 +191,15 @@ public class formThi extends javax.swing.JFrame {
         });
         getContentPane().add(btnThi, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 400, 140, 50));
 
+        jButton3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jButton3.setText("Thống kê");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 170, 52));
+
         setSize(new java.awt.Dimension(853, 513));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -239,6 +249,13 @@ public class formThi extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        formThongKe frm = new  formThongKe();
+        frm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -280,6 +297,7 @@ public class formThi extends javax.swing.JFrame {
     private javax.swing.JButton btnThi;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
