@@ -33,13 +33,14 @@ import java.util.logging.Logger;
  */
 public final class formThiTN extends javax.swing.JFrame {
 
-//    Socket socket;
-//    DataInputStream dis;
-//    DataOutputStream dos;
+    Socket socket;
+    DataInputStream dis;
+    DataOutputStream dos;
     int soCau = 0;
     int thoigian=0 ;
-    int id_ChuDe = 0;
-    int socauhoi = 0 ;
+    String id_ChuDe = formThi.id_ChuDe;
+    String socauhoi = formThi.socauhoi;
+//    int socauhoi = 0 ;
     String str = "";
     private static int timer = 30;
     int current = -1;
@@ -48,6 +49,7 @@ public final class formThiTN extends javax.swing.JFrame {
     ArrayList cauChon = null;
     String[] arrStr;
     int id_taikhoan;
+    int cauDung = 0;
 
     public formThiTN() {
         initComponents();
@@ -56,7 +58,7 @@ public final class formThiTN extends javax.swing.JFrame {
         LayThoiGian();
         listCauhoi = new ArrayList();
         cauChon = new ArrayList();
-        getAllCauHoi();
+//        getAllCauHoi();
         ThiTracNghiem();
         
         
@@ -65,18 +67,39 @@ public final class formThiTN extends javax.swing.JFrame {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        String time = " Timer : " + timer;
+        String time = " Thời gian : " + timer;
         g.setColor(Color.RED);
         g.setFont(new Font("Tahoma", Font.BOLD, 21));
 
         if (timer > 0) {
             g.drawString(time, 30, 80);
         } else {
-            g.drawString("Times up", 30, 80);
+            g.drawString("Hết giờ", 30, 80);            
+            try {
+                     cauHoiKeTiep();
+            } catch (IOException ex) {
+                Logger.getLogger(formThiTN.class.getName()).log(Level.SEVERE, null, ex);
+            }
             timer = thoigian +1;
-            cauHoiKeTiep();
         }
-        timer--;
+        if (current < soCau){    
+                timer--;
+                 }else{
+            try {
+//                double  diem = (double) (10.0/soCau)*cauDung;
+//                LuuDiem(diem);
+//                String message = "Số câu đúng :"+cauDung+"<br/>Điểm : "+diem;
+//                String htmlMessage = "<html>" + message + "</html>";
+//                JOptionPane.showMessageDialog(null, htmlMessage);
+//                this.setVisible(false);
+//                formThi KQ = new formThi();
+//                KQ.setVisible(true);
+                socket.close();
+            } catch (IOException ex) {
+                Logger.getLogger(formThiTN.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                 }
+        
         try {
             Thread.sleep(1000);
             repaint();
@@ -85,7 +108,7 @@ public final class formThiTN extends javax.swing.JFrame {
         }
     }
 
-    private void cauHoiKeTiep() {
+    private void cauHoiKeTiep() throws IOException {
         timer = thoigian;
         current++;
         //hiện kết quả vừa chọn lên console
@@ -131,20 +154,11 @@ public final class formThiTN extends javax.swing.JFrame {
             for (int i = 0; i < cauChon.size(); i++) {
                 send += cauChon.get(i) + "///";
             }
-            String arrAnswer[] = send.split("///");
-            int cauDung = 0;
-             ArrayList<String> Answer = new ArrayList<>();
-            for (int i = 0; i < arrStr.length; i+=7) {
-                Answer.add(arrStr[7]);
-            }
-                    //so sanh cau tra loi
-             for (int i = 0; i < arrAnswer.length; i++) {
-                if (Answer.get(i).equals(arrAnswer[i])) {
-                    cauDung++;
-                }
-            }
-            System.out.println("Số câu đúng: " + cauDung);
-            double  diem = (double) (10.0/soCau)*cauDung;
+            dos.writeUTF(send);
+            String cauDung1 = dis.readUTF();
+           
+            cauDung = Integer.parseInt(cauDung1);
+             double  diem = (double) (10.0/soCau)*cauDung;
             LuuDiem(diem);
             String message = "Số câu đúng :"+cauDung+"<br/>Điểm : "+diem;
             String htmlMessage = "<html>" + message + "</html>";
@@ -152,17 +166,32 @@ public final class formThiTN extends javax.swing.JFrame {
             this.setVisible(false);
             formThi KQ = new formThi();
             KQ.setVisible(true);
-
+            socket.close();
         }
     }
 
     public void ThiTracNghiem() {
-        arrStr = str.split("///");//tách chuỗi thành các phần con dựa trên một chuỗi phân tách được chỉ định.
-        //            System.out.println(arrStr);
-        int dem = 0;
-        for (int i = 0; i < arrStr.length; i +=8) {
-            if (dem < socauhoi)//chỉ dc làm so cau theo socauhoi
-            {
+    try {
+            socket = new Socket("localhost", 8000);
+            dis = new DataInputStream(socket.getInputStream());
+            dos = new DataOutputStream(socket.getOutputStream());
+            String send = "";
+            String flag = "11";
+            send += flag;
+            send += "///";
+            send += id_ChuDe ;
+            send += "///";
+            send += socauhoi ;
+            send += "///";
+            dos.writeUTF(send);
+            String receive = dis.readUTF();
+            String[] arrStr = receive.split("///");
+            System.out.println("reveive "+receive);
+            int i = 0;
+            int dem = 0;
+            for (i = 0; i < arrStr.length; i += 8) {
+                if (dem < Integer.parseInt(socauhoi))//chỉ dc làm so cau theo socauhoi
+                {
                 CauHoi CH = new CauHoi();
                 CH.setBODE_ID(Integer.parseInt(arrStr[i]));
                 CH.setCHUDE_ID(Integer.parseInt(arrStr[i + 1]));
@@ -173,17 +202,15 @@ public final class formThiTN extends javax.swing.JFrame {
                 CH.setD(arrStr[i + 6]);
                 CH.setDAP_AN(arrStr[i + 7]);
                 listCauhoi.add(CH);               
-            }
+                }
             dem++;
+            }
+            soCau = listCauhoi.size();
+            cauHoiKeTiep();
+        } catch (IOException ex) {
+            Logger.getLogger(formClient.class.getName()).log(Level.SEVERE, null, ex);
         }
-        soCau = listCauhoi.size();
-                jRadioButtonCauA.setSelected(false);
-            jRadioButtonCauB.setSelected(false);
-            jRadioButtonCauC.setSelected(false);
-            jRadioButtonCauD.setSelected(false);
-        cauHoiKeTiep(); 
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -210,7 +237,7 @@ public final class formThiTN extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 3, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 0));
+        jLabel1.setForeground(new java.awt.Color(0, 0, 51));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("THI TRẮC NGHIỆM");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, 190, -1));
@@ -238,6 +265,8 @@ public final class formThiTN extends javax.swing.JFrame {
         jLabelCauHoi.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabelCauHoi.setText("CÂU 1. ");
 
+        jButtonTiepTheo.setBackground(new java.awt.Color(255, 255, 102));
+        jButtonTiepTheo.setForeground(new java.awt.Color(0, 0, 102));
         jButtonTiepTheo.setText("TIẾP THEO");
         jButtonTiepTheo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -283,7 +312,7 @@ public final class formThiTN extends javax.swing.JFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 707, 470));
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 0));
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Data/brg_TTN.jpg"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/phong-nen-xanh-duong.jpg"))); // NOI18N
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 600));
 
         setSize(new java.awt.Dimension(1084, 607));
@@ -292,9 +321,11 @@ public final class formThiTN extends javax.swing.JFrame {
 
     private void jButtonTiepTheoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTiepTheoActionPerformed
         // TODO add your handling code here:
-        
-        cauHoiKeTiep();
-
+     try {
+            cauHoiKeTiep();
+        } catch (IOException ex) {
+            Logger.getLogger(formThiTN.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonTiepTheoActionPerformed
 
     /**
@@ -357,8 +388,8 @@ public final class formThiTN extends javax.swing.JFrame {
                 rsl.getInt("BLOCKTAODE"),rsl.getInt("BLOCKTHI"),rsl.getInt("ID_CHUDE"),
                 rsl.getInt("SOCAUHOI"),rsl.getInt("THOIGIAN"));
                 thoigian = std.getTHOIGIAN();
-                id_ChuDe = std.getID_CHUDE();
-                socauhoi = std.getSOCAUHOI();
+//                id_ChuDe = std.getID_CHUDE();
+//                socauhoi = std.getSOCAUHOI();
                 id_taikhoan = std.getID_TAIKHOAN();
             }
         } catch (Exception ex) {
@@ -373,55 +404,7 @@ public final class formThiTN extends javax.swing.JFrame {
             }
         }
     }
-    public void getAllCauHoi() {
-//        System.out.println("id_chude :"+id_ChuDe);
-        int[] soCau = new int[40];
 
-        Arrays.fill(soCau, 0);// tạo một danh sách câu hỏi có độ dài 32, ác câu hỏi đều chưa được chọn (0)
-        String sql = "SELECT * FROM BODE WHERE CHUDE_ID = '"+id_ChuDe+"'";
-        Random rand = new Random();
-        int dem = 0;//đếm số lượng câu hỏi đã được chọn.
-        while (dem < socauhoi+1) {//chọn đủ 10 câu hỏi.
-            int k = rand.nextInt(11);//random 0-10
-            if (soCau[k] != 1) {
-                soCau[k] = 1;//k là đã được chọn bằng cách gán giá trị 1 
-                dem++;//thêm một câu hỏi.
-            }
-        }
-         dem = -1;
-         
-        try {
-            /* được sử dụng để duyệt qua các kết quả trả về từ truy vấn. Trong vòng lặp này, kiểm tra xem câu hỏi có được chọn (
-            dựa trên giá trị của soCau[dem]), và nếu có, lấy thông tin về câu hỏi từ ResultSet và nối nó vào chuỗi str.*/
-        DbAccess acc = new DbAccess();
-        ResultSet rs = acc.Query(sql);
-            while (rs.next()) {
-                dem++;
-                if (soCau[dem] > 0) {
-                    str += rs.getString("BODE_ID");
-                    str += "///";
-                    str += rs.getString("CHUDE_ID");
-                    str += "///";
-                    str += rs.getString("NOIDUNG");
-                    str += "///";
-                    str += rs.getString("A");
-                    str += "///";
-                    str += rs.getString("B");
-                    str += "///";
-                    str += rs.getString("C");
-                    str += "///";
-                    str += rs.getString("D");
-                    str += "///";
-                    str += rs.getString("DAP_AN");
-                    str += "///";
-                }
-            }
-
-//            System.out.println(str);
-        } catch (SQLException ex) {
-            Logger.getLogger(formThiTN.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
     
     public void LuuDiem (double diem){
         Connection connection = null;

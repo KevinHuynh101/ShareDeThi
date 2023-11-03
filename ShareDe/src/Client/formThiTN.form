@@ -40,7 +40,7 @@
           <Font name="Times New Roman" size="18" style="3"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="ff" red="ff" type="rgb"/>
+          <Color blue="33" green="0" red="0" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="THI TR&#x1eae;C NGHI&#x1ec6;M"/>
@@ -163,6 +163,12 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButtonTiepTheo">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="66" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="66" green="0" red="0" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="TI&#x1ebe;P THEO"/>
           </Properties>
           <Events>
@@ -177,7 +183,7 @@
           <Color blue="0" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Data/brg_TTN.jpg"/>
+          <Image iconType="3" name="/Image/phong-nen-xanh-duong.jpg"/>
         </Property>
       </Properties>
       <Constraints>

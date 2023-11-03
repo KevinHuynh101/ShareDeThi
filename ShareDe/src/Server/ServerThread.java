@@ -44,6 +44,7 @@ public class ServerThread implements Runnable {
     public static final int MaxScore = 8;
     public static final int SonguoiLamDe = 9;
     public static final int SoLanDeDcLam = 10;
+    public static final int thiTracNghiem = 11;
     public int flag(String str) {
         if (str.equals("1")) {
             return loginServer;
@@ -65,6 +66,8 @@ public class ServerThread implements Runnable {
             return SonguoiLamDe; 
         } else if (str.equals("10")) {
             return SoLanDeDcLam; 
+         } else if (str.equals("11")) {
+            return thiTracNghiem;     
         } else {
             return -1;
         }
@@ -138,6 +141,30 @@ public class ServerThread implements Runnable {
                     String CountDeDuocLam = DbAccess.CountDeDuocLam(receiveArray[1]);
                     dos.writeUTF(CountDeDuocLam);
                     break;
+                case thiTracNghiem:
+                    System.out.println("Có Client đang thi trắc nghiệm...");
+                    String strCauHoi = DbAccess.getAllCauHoi(receiveArray[1],receiveArray[2]);
+                    System.out.println(strCauHoi);
+                    String arrCauHoi[] = strCauHoi.split("///");
+                    dos.writeUTF(strCauHoi);
+                    //nhan cau tra loi lient
+                    String receiveAnswer = dis.readUTF();
+                    System.out.println("Client đã trả lời: " + receiveAnswer);
+                    String arrAnswer[] = receiveAnswer.split("///");
+                    int cauDung = 0;
+                    ArrayList<String> Answer = new ArrayList<>();
+                    for (int i = 0; i < arrCauHoi.length; i+=7) {
+                        Answer.add(arrCauHoi[7]);
+                    }
+                    //so sanh cau tra loi
+                    for (int i = 0; i < arrAnswer.length; i++) {
+                        if (Answer.get(i).equals(arrAnswer[i])) {
+                            cauDung++;
+                        }
+                    }
+                    System.out.println("Số câu đúng: " + cauDung);
+                    dos.writeUTF(String.valueOf(cauDung));
+                break;
                     
             }
         } catch (IOException ex) {

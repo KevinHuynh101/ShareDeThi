@@ -505,7 +505,54 @@ public class DbAccess {
             }
         }
              return std;
-        
+    }
+        public static String getAllCauHoi(String id_chude,String socauhoi) {
+         int id_ChuDe = Integer.parseInt(id_chude);
+        String str = "";
+        int[] soCau = new int[40];
+//        System.out.println("id_ChuDE:"+id_ChuDe);
+        int soCauHoi = Integer.parseInt(socauhoi);
+        Arrays.fill(soCau, 0);// tạo một danh sách câu hỏi có độ dài 32, ác câu hỏi đều chưa được chọn (0)
+        String sql = "SELECT * FROM BODE WHERE CHUDE_ID = '"+id_ChuDe+"'";
+        Random rand = new Random();
+        int dem = 0;//đếm số lượng câu hỏi đã được chọn.
+        while (dem < soCauHoi+1) {//chọn đủ 10 câu hỏi.
+            int k = rand.nextInt(21);//random 0-10
+            if (soCau[k] != 1) {
+                soCau[k] = 1;//k là đã được chọn bằng cách gán giá trị 1 
+                dem++;//thêm một câu hỏi.
+            }
+        }
+         dem = -1;
+        try {
+        DbAccess acc = new DbAccess();
+        ResultSet rs = acc.Query(sql);
+            while (rs.next()) {
+                dem++;
+                if (soCau[dem] > 0) {
+                    str += rs.getString("BODE_ID");
+                    str += "///";
+                    str += rs.getString("CHUDE_ID");
+                    str += "///";
+                    str += rs.getString("NOIDUNG");
+                    str += "///";
+                    str += rs.getString("A");
+                    str += "///";
+                    str += rs.getString("B");
+                    str += "///";
+                    str += rs.getString("C");
+                    str += "///";
+                    str += rs.getString("D");
+                    str += "///";
+                    str += rs.getString("DAP_AN");
+                    str += "///";
+                }
+            }
+            } catch (SQLException ex) {
+            Logger.getLogger(DbAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return str;
+
     }
     
 }
