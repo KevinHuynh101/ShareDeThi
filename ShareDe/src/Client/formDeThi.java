@@ -318,7 +318,7 @@ public class formDeThi extends javax.swing.JFrame {
             Logger.getLogger(formDeThi.class.getName()).log(Level.SEVERE, null, ex);
         }
          btnSua.setEnabled(false);
-        if(checkThi == true ){
+        if(checkThi == false ){
 //            System.out.println("chewckthi" +checkThi);
             btnSua.setEnabled(true);
         }
