@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 /**
  *
- * @author Pham Minh Hieu
+ * @author kimdo
  */
 public class Server {
 

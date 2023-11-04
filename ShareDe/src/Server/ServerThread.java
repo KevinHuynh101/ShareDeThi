@@ -14,13 +14,11 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 
 /**
- * @author Pham Minh Hieu
+ *
+ * @author kimdo
  */
 public class ServerThread implements Runnable {
 
@@ -144,12 +142,12 @@ public class ServerThread implements Runnable {
                 case thiTracNghiem:
                     System.out.println("Có Client đang thi trắc nghiệm...");
                     String strCauHoi = DbAccess.getAllCauHoi(receiveArray[1],receiveArray[2]);
-                    System.out.println(strCauHoi);
+//                    System.out.println(strCauHoi);
                     String arrCauHoi[] = strCauHoi.split("///");
                     dos.writeUTF(strCauHoi);
                     //nhan cau tra loi lient
                     String receiveAnswer = dis.readUTF();
-                    System.out.println("Client đã trả lời: " + receiveAnswer);
+//                    System.out.println("Client đã trả lời: " + receiveAnswer);
                     String arrAnswer[] = receiveAnswer.split("///");
                     int cauDung = 0;
                     ArrayList<String> Answer = new ArrayList<>();
