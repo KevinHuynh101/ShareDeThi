@@ -41,7 +41,7 @@ public class formLogin extends javax.swing.JFrame {
     String secretKey = "huynhnam";
     String salt = "nhuhuynh";
     int id;
-
+    public static boolean phanquyen;
     public static int id_taiKhoan;
     public formLogin() {
         initComponents();
@@ -176,57 +176,7 @@ public class formLogin extends javax.swing.JFrame {
 
     private void jButtonDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDangNhapActionPerformed
         // TODO add your handling code here:
-//        String send = "";
-//        String flag = "2";
-//
-//        send += flag;
-//        send += "///";
-//
-//        
-//        send += jTextFieldUsername.getText();
-//        send += "///";
-//
-//        send += jPasswordField1.getText();
-//        send += "///";
-//
-//        boolean check = false;
-//        try {
-//            while (!check) {
-//                String Username, Password;
-//                
-//                Username = jTextFieldUsername.getText();
-//                Password = jPasswordField1.getText();
-//
-//                if (Username.equals("") && Password.equals("")) {
-//                    JOptionPane.showMessageDialog(this, "USERNAME HOẶC PASSWORD KHÔNG ĐƯỢC ĐỂ TRỐNG. VUI LÒNG NHẬP LẠI!!");                    
-//                    return;
-//                } else {
-//                    Socket socket = new Socket("localhost", 8000);
-//                    DataInputStream dis = new DataInputStream(socket.getInputStream());
-//                    DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-//                    dos.writeUTF(send);
-//                    String arrStr[] = send.split("///");
-//                    System.out.println("\nUsername: " + arrStr[1] + "\nPassword: " + arrStr[2]);
-//                    String receive = dis.readUTF();
-//                    System.out.println("Receive: " + receive);
-//                    if ("1".equals(receive)) {
-//                        JOptionPane.showMessageDialog(this, "KẾT NỐI THÀNH CÔNG");
-//                        formLogin DN = new formLogin();
-//                        this.setVisible(false);
-//                        formNguoiDung TT = new formNguoiDung();
-//                        TT.setVisible(true);
-//                        check = true;
-//                        socket.close();
-//                    } else {
-//                        JOptionPane.showMessageDialog(null, "KẾT NỐI CSDL THẤT BẠI");
-//                        
-//                        return;
-//                    }
-//                }
-//            }
-//        } catch (IOException ex) {
-//            Logger.getLogger(formClient.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+
         java.util.List<TaiKhoan> taikhoanList = new ArrayList<>();
         String matkhau = null;
         boolean s= true ;
@@ -244,6 +194,7 @@ public class formLogin extends javax.swing.JFrame {
                         ,rsl.getDate("NGAYXACNHAN"));
                id = std.getTAIKHOAN_ID();
                matkhau = std.getMATKHAU();
+               phanquyen = std.isPHANQUYEN();
             }
             String decryptedString = decrypt(matkhau, secretKey, salt);
             System.out.println("decryptedString :"+decryptedString);
@@ -251,6 +202,7 @@ public class formLogin extends javax.swing.JFrame {
             
             if (rs.next()){
                 if(pass.equals(decryptedString)){ 
+                    
                     id_taiKhoan= id;
                     LuuId(id);
                     Socket socket = new Socket("localhost", 8000);

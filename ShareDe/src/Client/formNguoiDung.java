@@ -48,7 +48,17 @@ public class formNguoiDung extends javax.swing.JFrame {
         
 //        LayId();
         Laydata();
-
+        if(formLogin.phanquyen == false){
+            jLabel8.hide();
+            cbKhoa.hide();
+            jLabel9.hide();
+            cbCamThi.hide();
+            lbCamTaoDe.hide();
+            cbCamTao.hide();
+           
+            
+        }
+        
         String decryptedString = decrypt(encryptmatkhau, secretKey, salt);
         txtMatKhau.setText(decryptedString);
     }
@@ -81,7 +91,12 @@ public class formNguoiDung extends javax.swing.JFrame {
         btnCapNhat = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        lbCamTaoDe = new javax.swing.JLabel();
+        cbKhoa = new javax.swing.JCheckBox();
+        cbCamThi = new javax.swing.JCheckBox();
+        cbCamTao = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 255));
@@ -183,7 +198,7 @@ public class formNguoiDung extends javax.swing.JFrame {
                 btnCapNhatActionPerformed(evt);
             }
         });
-        getContentPane().add(btnCapNhat, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, 110, 40));
+        getContentPane().add(btnCapNhat, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 450, 110, 40));
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-eye-20.png"))); // NOI18N
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -202,9 +217,17 @@ public class formNguoiDung extends javax.swing.JFrame {
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 110, 119, 52));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/phong-nen-xanh-duong.jpg"))); // NOI18N
-        jLabel7.setText("jLabel7");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 600));
+        jLabel8.setText("Khóa tài khoản :");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 400, 100, -1));
+
+        jLabel9.setText("Cấm thi :");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 400, 60, -1));
+
+        lbCamTaoDe.setText("Cấm tạo đề :");
+        getContentPane().add(lbCamTaoDe, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 400, 80, 20));
+        getContentPane().add(cbKhoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 400, -1, -1));
+        getContentPane().add(cbCamThi, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 400, -1, -1));
+        getContentPane().add(cbCamTao, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 400, -1, -1));
 
         setSize(new java.awt.Dimension(1084, 607));
         setLocationRelativeTo(null);
@@ -244,14 +267,16 @@ private boolean checkButton = false;
          }
          else
              i=0;
-         
+        int BLOCK = cbKhoa.isSelected() ? 1 : 0;
+        int BLOCKTAODE = cbCamTao.isSelected()  ? 1 : 0 ;
+        int BLOCKTHI= cbCamThi.isSelected()  ? 1 : 0;
          Connection connection = null;
          PreparedStatement statement = null;
             try {
             String URL = "jdbc:sqlserver://NAMHUYNH\\SQLEXPRESS:1433;"+
                     "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
             connection = DriverManager.getConnection(URL);
-            String sql = "UPDATE TAIKHOAN SET TEN=N'"+name+"',EMAIL = N'"+email+"', MATKHAU = N'"+encryptedPassword+"', GIOITINH = N'"+i+"', NGAYSINH= '"+df.format(birthday)+"' WHERE TAIKHOAN_ID ='"+id+"';";
+            String sql = "UPDATE TAIKHOAN SET TEN=N'"+name+"',EMAIL = N'"+email+"', MATKHAU = N'"+encryptedPassword+"', GIOITINH = N'"+i+"', NGAYSINH= '"+df.format(birthday)+"',BLOCK = '"+BLOCK+"',BLOCKTAODE = '"+BLOCKTAODE+"',BLOCKTHI = '"+BLOCKTHI+"' WHERE TAIKHOAN_ID ='"+id+"';";
                 System.out.println(id);
             statement = connection.prepareCall(sql);        
             statement.execute();
@@ -344,6 +369,9 @@ private boolean checkButton = false;
     private javax.swing.JButton btnCapNhat;
     private javax.swing.JButton btnDAngXuat;
     private javax.swing.JButton btnDeThi;
+    private javax.swing.JCheckBox cbCamTao;
+    private javax.swing.JCheckBox cbCamThi;
+    private javax.swing.JCheckBox cbKhoa;
     private javax.swing.JRadioButton cbNam;
     private javax.swing.JRadioButton cbNu;
     private javax.swing.JButton jButton1;
@@ -356,7 +384,9 @@ private boolean checkButton = false;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel lbCamTaoDe;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JPasswordField txtMatKhau;
     private javax.swing.JTextField txtTen;
@@ -393,7 +423,9 @@ private boolean checkButton = false;
     
     public void Laydata() {
         boolean gioitinh = false;
-
+        int khoa = 0;
+        int CamThi = 0;
+        int CamTaoDe=0;
         Connection connection = null;
         java.sql.Statement statement = null;
         try {
@@ -416,8 +448,25 @@ private boolean checkButton = false;
                 encryptmatkhau = std.getMATKHAU();
                 NgaySinh.setDate(std.getNGAYSINH());
                 gioitinh = std.isGIOITINH();
+//                txtKhoa.setText(Integer.toString(std.getBLOCK()));
+//                txtCamThi.setText(Integer.toString(std.getBLOCKTHI()));
+//                txtCamTaoDe.setText(Integer.toString(std.getBLOCKTAODE()));
+                khoa = std.getBLOCK();
+                CamThi =  std.getBLOCKTHI();
+                CamTaoDe = std.getBLOCKTAODE();
             }
-           
+            if(khoa == 0 ){
+                cbKhoa.setSelected(false);
+            }else
+                cbKhoa.setSelected(true);
+            if(CamThi == 0 ){
+                cbCamThi.setSelected(false);
+            }else
+                cbCamThi.setSelected(true);
+            if(CamTaoDe == 0 ){
+                cbCamTao.setSelected(false);
+            }else
+                cbCamTao.setSelected(true);
             if(gioitinh == true){
                 cbNam.setSelected(true);
             }else
