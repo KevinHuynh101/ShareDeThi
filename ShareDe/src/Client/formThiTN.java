@@ -138,12 +138,16 @@ public final class formThiTN extends javax.swing.JFrame {
             jLabelCauHoi.setText("Câu " + dem + ". " + CH.getNOIDUNG());
             System.out.println("A. " + CH.getA());
             jRadioButtonCauA.setText("A. " + CH.getA());
+            jRadioButtonCauA.setSelected(false);
             System.out.println("B. " + CH.getB());
             jRadioButtonCauB.setText("B. " + CH.getB());
+            jRadioButtonCauB.setSelected(false);
             System.out.println("C. " + CH.getC());
             jRadioButtonCauC.setText("C. " + CH.getC());
+            jRadioButtonCauC.setSelected(false);
             System.out.println("D. " + CH.getD());
             jRadioButtonCauD.setText("D. " + CH.getD());
+            jRadioButtonCauD.setSelected(false);
             if (dem == soCau) {
                 jButtonTiepTheo.setText("NỘP BÀI");
             }
@@ -186,7 +190,7 @@ public final class formThiTN extends javax.swing.JFrame {
             dos.writeUTF(send);
             String receive = dis.readUTF();
             String[] arrStr = receive.split("///");
-            System.out.println("reveive "+receive);
+//            System.out.println("reveive "+receive);
             int i = 0;
             int dem = 0;
             for (i = 0; i < arrStr.length; i += 8) {
@@ -245,19 +249,15 @@ public final class formThiTN extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(900, 500));
 
-        buttonGroupDapAn.add(jRadioButtonCauA);
         jRadioButtonCauA.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jRadioButtonCauA.setText("A.");
 
-        buttonGroupDapAn.add(jRadioButtonCauB);
         jRadioButtonCauB.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jRadioButtonCauB.setText("B.");
 
-        buttonGroupDapAn.add(jRadioButtonCauC);
         jRadioButtonCauC.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jRadioButtonCauC.setText("C.");
 
-        buttonGroupDapAn.add(jRadioButtonCauD);
         jRadioButtonCauD.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jRadioButtonCauD.setText("D.");
 

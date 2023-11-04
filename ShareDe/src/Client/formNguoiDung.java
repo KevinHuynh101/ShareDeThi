@@ -277,7 +277,7 @@ private boolean checkButton = false;
                     "databaseName=SHAREDETHI;user=sas;password=12345;encrypt=false";
             connection = DriverManager.getConnection(URL);
             String sql = "UPDATE TAIKHOAN SET TEN=N'"+name+"',EMAIL = N'"+email+"', MATKHAU = N'"+encryptedPassword+"', GIOITINH = N'"+i+"', NGAYSINH= '"+df.format(birthday)+"',BLOCK = '"+BLOCK+"',BLOCKTAODE = '"+BLOCKTAODE+"',BLOCKTHI = '"+BLOCKTHI+"' WHERE TAIKHOAN_ID ='"+id+"';";
-                System.out.println(id);
+//                System.out.println(id);
             statement = connection.prepareCall(sql);        
             statement.execute();
             JOptionPane.showMessageDialog(this, "Cập nhật thành công");
