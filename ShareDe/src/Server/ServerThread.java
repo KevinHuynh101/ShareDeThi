@@ -128,6 +128,7 @@ public class ServerThread implements Runnable {
                     dos.writeUTF(AvgScore);
                     break;
                 case MaxScore:
+                    String TaikhoanMax = DbAccess.TaiKhoanMax(receiveArray[1]);
                     String MaxScore = DbAccess.MaxScore(receiveArray[1]);
                     dos.writeUTF(MaxScore);
                     break;

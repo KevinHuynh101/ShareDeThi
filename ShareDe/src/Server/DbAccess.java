@@ -279,7 +279,7 @@ public class DbAccess {
         Connection connection = null;
         Statement statement = null;
         List<String> listTen = new ArrayList<>();
-        System.out.println("bode"+bode);
+//        System.out.println("bode"+bode);
         String name = "";
 //        String bode = (String) cbBoDe5.getSelectedItem();
              try {
@@ -301,8 +301,8 @@ public class DbAccess {
             statement = connection.createStatement();           
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {                
-                   name = resultSet.getString("TEN");
-                  name += resultSet.getString("///");
+                   name += resultSet.getString("TEN");
+                   
 //                  listTen.add(name);
             }
             
@@ -310,7 +310,7 @@ public class DbAccess {
             Logger.getLogger(formThongKe.class.getName()).log(Level.SEVERE, null, ex);
         
         }
-             System.out.println("name "+name);
+             System.out.println("Tài khoản có diểm số cao nhất "+name);
         return name;
     }
     public static String AvgScore (String bode){
